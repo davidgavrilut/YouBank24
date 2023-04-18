@@ -11,8 +11,8 @@ public class ApplicationUser : IdentityUser {
     [DisplayName("Last Name")]
     public string LastName { get; set; }
     [Required]
-    [DisplayName("Date of Birth")]
-    public DateOnly DateOfBirth { get; set; }
+    [DisplayName("Birth Year")]
+    public int BirthYear { get; set; }
     [Required]
     public string Address { get; set; }
     [Required]
