@@ -1,11 +1,11 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <div class="col-md-5 d-flex flex-column" style="padding: 100px;">
+        <div class="col-md-5 d-flex flex-column" style="padding-top: 75px; padding-right: 75px;">
             <h2 class="main-title">YOUR BANK IS HERE!</h2>
             <h4 class="secondary-title">Get access to the 24 banking system that provides you with instant payments and full transaction history!</h4>
             <h4 class="secondary-title mb-5">Join today!</h4>
-            <button class="btn btn-primary btn-lg mb-3">Register for free</button>
-            <button class="btn btn-secondary btn-lg">Sign in</button>
+            <a class="btn btn-primary btn-lg mb-3" asp-area="Identity" asp-page="/Account/Register">Register for free</a>
+            <a class="btn btn-secondary btn-lg" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
         </div>
         <div class="col-md-7">
             <img class="main-image" src="/img/bank-illustration5.png" />

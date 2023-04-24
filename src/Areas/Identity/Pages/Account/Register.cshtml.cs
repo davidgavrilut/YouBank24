@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -97,6 +98,23 @@ namespace YouBank24.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Required]
+            [DisplayName("First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [DisplayName("Last Name")]
+            public string LastName { get; set; }
+            [Required]
+            [DisplayName("Birth Year")]
+            public int BirthYear { get; set; }
+            [Required]
+            public string Address { get; set; }
+            [Required]
+            public string PostalCode { get; set; }
+            [Required]
+            public string City { get; set; }
+            [Required]
+            public string Country { get; set; }
         }
 
 
