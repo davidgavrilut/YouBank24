@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using YouBank24.Models;
 
 namespace YouBank24.Areas.Identity.Pages.Account
 {
@@ -134,6 +135,15 @@ namespace YouBank24.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.BirthYear = Input.BirthYear;
+                user.Address = Input.Address;
+                user.PostalCode = Input.PostalCode;
+                user.City = Input.City;
+                user.Country = Input.Country;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -172,11 +182,11 @@ namespace YouBank24.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
