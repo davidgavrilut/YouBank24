@@ -1,15 +1,12 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
 }
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
-}
-
-html {
-  position: relative;
 }
 
 html, body {
