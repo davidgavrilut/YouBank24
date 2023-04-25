@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using YouBank24.Models;
 
 namespace YouBank24.Controllers {
@@ -11,6 +12,16 @@ namespace YouBank24.Controllers {
         }
 
         public IActionResult Index() {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null) {
+                return RedirectToAction(nameof(MainAccount));
+            } else {
+                return View();
+            }
+        }
+
+        public IActionResult MainAccount() {
             return View();
         }
 
