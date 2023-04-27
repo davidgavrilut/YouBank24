@@ -10,17 +10,66 @@ html {
 }
 
 html, body {
-    height: 100%;
+    min-height: 100%;
 }
 
 body {
     padding: 0 75px 0 75px;
-    margin-bottom: 60px;
     background: linear-gradient(180deg, rgba(52,89,230,1) 0%, rgba(55, 9, 45, 1) 100%);
 }
 
 footer {
-    width: auto !important
+    width: auto !important;
+    line-height: inherit !important;
+}
+
+.user-card {
+    background: linear-gradient(30deg, rgb(251 146 35) 0%, rgba(250,206,35,1) 100%);
+    border-radius: 5px;
+}
+
+.card-number {
+    margin: auto;
+    color: #392766;
+    font-weight: bold;
+    letter-spacing: 10px;
+    font-family: Roboto Thin;
+    font-size: 20px;
+}
+
+.expiration-date {
+    margin-right: 3rem;
+    color: #392766;
+    font-weight: bold;
+    letter-spacing: 4px;
+    font-family: Roboto Thin;
+    font-size: 14px;
+}
+
+.card-name {
+    color: #392766;
+    letter-spacing: 5px;
+    font-size: 20px;
+    font-family: Roboto;
+}
+
+.balance {
+    width: 40%;
+    border: 1px solid #6863b7;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.balance-text {
+    margin: 0;
+    color: white;
+    letter-spacing: 7px;
+    font-size: 21px;
+    font-family: Roboto Thin;
+}
+
+.action-buttons-text {
+    margin: 0 5% 0 0;
 }
 
 .main-title {
@@ -45,6 +94,13 @@ footer {
 
 .logo-layout {
     max-width: 70px;
+}
+
+.register-card {
+    padding: 50px;
+    border: 1px solid #968ec9;
+    border-radius: 10px;
+    background: #0000001a;
 }
 
 .link-hover-behavior:hover {
