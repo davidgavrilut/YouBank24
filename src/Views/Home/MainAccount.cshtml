@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="balance d-flex justify-content-evenly align-items-center">
-        <p class="balance-text text-uppercase">Your current balance is:</p> <button class="btn btn-primary" style="width: 20%;">SHOW</button>
+        <p class="balance-text text-uppercase">Your current balance is:</p> <button id="balanceButton" class="btn btn-primary" style="width: 20%;">SHOW</button>
     </div>
     <div class="action-buttons d-flex justify-content-center" style="width: 40%;">
         <button class="btn btn-primary d-flex align-items-center justify-content-around me-4" style="width: 30%;">
@@ -55,3 +55,14 @@
         </button>
     </div>
 </div>
+
+<script type="text/javascript">
+     let button = document.querySelector("#balanceButton");
+     button.addEventListener("click", () => {
+         if (button.textContent === "SHOW") {
+            button.textContent = "$4200";
+         } else {
+            button.textContent = "SHOW";
+         }
+     })
+</script>
