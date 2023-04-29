@@ -1,7 +1,6 @@
-namespace YouBank24.Models {
-    public class ErrorViewModel {
-        public string? RequestId { get; set; }
+namespace YouBank24.Models; 
+public class ErrorViewModel {
+    public string? RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }
