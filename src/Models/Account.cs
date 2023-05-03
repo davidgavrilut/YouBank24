@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace YouBank24.Models; 
 public class Account {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string AccountId { get; set; }
     [Required]
     public string IBAN { get; set; }
