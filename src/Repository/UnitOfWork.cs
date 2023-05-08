@@ -7,6 +7,7 @@ public class UnitOfWork : IUnitOfWork {
     public UnitOfWork(ApplicationDbContext db) {
         _db = db;
         Account = new AccountRepository(_db);
+        ApplicationUser = new ApplicationUserRepository(_db);
     }
 
     public IAccountRepository Account { get; private set; }
