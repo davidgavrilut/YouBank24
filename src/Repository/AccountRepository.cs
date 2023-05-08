@@ -11,6 +11,14 @@ public class AccountRepository : Repository<Account>, IAccountRepository {
         rand = new Random();
     }
 
+    public void Add(Account account) {
+        dbSet.Add(account);
+    }
+
+    public void Remove(Account account) {
+        dbSet.Remove(account);
+    }
+
     public void Update(Account account) {
         _db.Accounts.Update(account);
     }

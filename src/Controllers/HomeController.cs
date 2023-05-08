@@ -2,19 +2,26 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using YouBank24.Models;
+using YouBank24.Models.ViewModels;
+using YouBank24.Repository.IRepository;
 
 namespace YouBank24.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private ClaimsIdentity _claimsIdentity;
+        private Claim _claim;
 
-        public HomeController(ILogger<HomeController> logger) {
+
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index() {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim != null) {
+            _claimsIdentity = (ClaimsIdentity)User.Identity;
+            _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (_claim != null) {
                 return RedirectToAction(nameof(MainAccount));
             } else {
                 return View();
@@ -22,7 +29,20 @@ namespace YouBank24.Controllers {
         }
 
         public IActionResult MainAccount() {
-            return View();
+            _claimsIdentity = (ClaimsIdentity)User.Identity;
+            _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            // null check - to debug
+
+            if (_claim != null) {
+                AccountViewModel accountViewModel = new() {
+                    Account = _unitOfWork.Account.GetFirstOrDefault(x => x.ApplicationUserId == _claim.Value),
+                    ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == _claim.Value)
+                };
+                return View(accountViewModel);
+            } else {
+                return NotFound();
+            }
         }
 
         public IActionResult Privacy() {

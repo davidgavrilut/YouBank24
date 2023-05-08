@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork {
     }
 
     public IAccountRepository Account { get; private set; }
+    public IApplicationUserRepository ApplicationUser { get; private set; }
 
     public void Save() {
         _db.SaveChanges();

@@ -1,8 +1,9 @@
-﻿@model YouBank24.Models.Account
+﻿@model YouBank24.Models.ViewModels.AccountViewModel
 
 <div class="d-flex flex-column align-items-center" style="gap: 75px;">
     <div class="header">
-        <h2 class="main-title text-uppercase mb-0">Welcome, John!</h2>
+        <input hidden asp-for="Account.AccountId" />
+        <h2 class="main-title text-uppercase mb-0">Welcome, @Model.ApplicationUser.FirstName!</h2>
     </div>
     <div class="user-card w-25 py-2 px-3">
         <div class="row mb-3">

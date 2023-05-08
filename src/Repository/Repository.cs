@@ -14,14 +14,6 @@ public class Repository<T> : IRepository<T> where T : class {
 
     public T GetFirstOrDefault(Expression<Func<T, bool>> expression) {
         IQueryable<T> query = dbSet.Where(expression);
-        return query.FirstOrDefault();
-    }
-
-    public void Add(T entity) {
-        dbSet.Add(entity);
-    }
-
-    public void Remove(T entity) {
-        dbSet.Remove(entity);
+        return query.FirstOrDefault() ?? throw new InvalidOperationException("No results found.");
     }
 }
