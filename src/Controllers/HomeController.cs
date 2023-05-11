@@ -53,4 +53,17 @@ public class HomeController : Controller {
     public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+    #region API CALLS
+
+    [HttpGet]
+    public IActionResult GetAccountCardNumberBalance() {
+        _claimsIdentity = (ClaimsIdentity)User.Identity;
+        _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+        var account = _unitOfWork.Account.GetFirstOrDefault(x => x.ApplicationUserId == _claim.Value);
+        return Json(new { cardNumber = account.CardNumber, balance = account.Balance });
+    }
+
+    #endregion
 }
