@@ -42,18 +42,18 @@
         <p class="balance-text text-uppercase">Your current balance is:</p> <button  id="balanceButton" class="btn btn-primary" style="width: 20%;">SHOW</button>
     </div>
     <div class="action-buttons d-flex justify-content-center" style="width: 40%;">
-        <button class="btn btn-primary d-flex align-items-center justify-content-around me-4" style="width: 30%;">
+        <a asp-area="" asp-controller="SendMoney" asp-action="Index" class="btn btn-primary d-flex align-items-center justify-content-around me-4" style="width: 30%;">
             <img src="~/img/money.png" style="width: 30px;" />
             <p class="action-buttons-text">
                 Send Money
             </p>
-        </button>
-        <button class="btn btn-primary d-flex align-items-center justify-content-around" style="width: 30%;">
+        </a>
+        <a class="btn btn-primary d-flex align-items-center justify-content-around" style="width: 30%;">
             <img src="~/img/history.png" style="width: 30px;" />
             <p class="action-buttons-text">
                 Transactions
             </p>
-        </button>
+        </a>
     </div>
 </div>
 

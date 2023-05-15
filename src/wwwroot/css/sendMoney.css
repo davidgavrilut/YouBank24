@@ -1,0 +1,50 @@
+﻿.send-money-container {
+    min-height: 550px;
+}
+
+.send-money-item {
+    width: 50%;
+    border: 1px solid #8a86c7;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.send-money-item:hover {
+    background: rgb(255 255 255 / 5%);
+}
+
+.send-money-img {
+    width: 55%;
+}
+
+.send-money-name {
+    margin: 0;
+    color: white;
+    letter-spacing: 4px;
+    font-size: 25px;
+    font-family: Roboto Thin;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.send-money-email {
+    font-family: Roboto Thin;
+    color: #ececec;
+    font-style: italic;
+}
+
+.send-money-item-selected {
+    width: 50%;
+    border: 1px solid #8a86c7;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgb(255 255 255 / 30%);
+    box-shadow: 0px 0px 20px 0px #222967;
+}
+
+.close-icon {
+    width: 30%;
+    cursor: pointer
+}

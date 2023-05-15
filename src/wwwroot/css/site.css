@@ -23,6 +23,10 @@ footer {
     line-height: inherit !important;
 }
 
+p {
+    margin-bottom: 0 !important;
+}
+
 .user-card {
     background: linear-gradient(30deg, rgb(251 146 35) 0%, rgba(250,206,35,1) 100%);
     border-radius: 5px;
