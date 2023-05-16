@@ -17,8 +17,8 @@ function displayHiddenCardNumber(text) {
     hiddenCardNumber.textContent = finalString;
 }
 
-fetch("/Home/GetAccountCardNumberBalance").then(res => res.json())
-    .then(data => {
-        showButton(data.balance);
-        displayHiddenCardNumber(data.cardNumber);
+fetch("/Home/GetAccountCardNumberBalance").then(data => data.json())
+    .then(res => {
+        showButton(res.balance);
+        displayHiddenCardNumber(res.cardNumber);
 })
