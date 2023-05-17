@@ -26,10 +26,11 @@ public class SendMoneyController : Controller {
         _claimsIdentity = (ClaimsIdentity)User.Identity;
         _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
         IEnumerable<ApplicationUser> users = _unitOfWork.ApplicationUser.GetAll(x => x.Id != _claim.Value);
+        List<object> usersBriefData = new List<object>();
         foreach(var user in users) {
-            return Json(new { id = user.Id, firstName = user.FirstName, lastName = user.LastName, email = user.Email });
+            usersBriefData.Add( new { id = user.Id, firstName = user.FirstName, lastName = user.LastName, email = user.Email });
         }
-        return NotFound();
+        return Json(usersBriefData);
     }   
     #endregion
 }
