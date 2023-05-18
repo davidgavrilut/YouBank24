@@ -1,13 +1,4 @@
-﻿//const sendMoneyItems = document.querySelectorAll(".send-money-item");
-
-//sendMoneyItems.forEach(item => {
-//    item.addEventListener("click", (e) => {
-//        item.classList.add("send-money-item-selected");
-//        item.classList.remove("send-money-item");
-//    })
-//})
-
-const sendMoneyContainer = document.querySelector('.send-money-container');
+﻿const sendMoneyContainer = document.querySelector('.send-money-container');
 let selectedSendMoneyItem = null;
 
 function displayUsers(users) {
