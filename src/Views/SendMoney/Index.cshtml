@@ -1,10 +1,17 @@
-﻿<div class="d-flex flex-column align-items-center" style="gap: 50px;">
+﻿@model Transaction
+
+<div class="d-flex flex-column align-items-center" style="gap: 50px;">
     <div class="header">
         <h2 class="main-title text-uppercase mb-0" style="
     font-size: 60px;
 ">Send Money Instantly</h2>
     </div>
     <div class="send-money-container d-flex justify-content-start align-items-center flex-column w-100">
+        <div id="inputContainer" class="d-none d-flex align-items-center w-50 p-3 mb-3">
+            <p class="text-uppercase me-3" style="letter-spacing: 0.25rem;">Amount:</p>
+            <input id="inputAmount" class="form-control w-25" asp-for="Amount" type="text" />
+            <input hidden id="inputEmail" class="form-control w-25" type="text" />
+        </div>
     </div>
     <div class="action-buttons d-flex justify-content-center mb-5" style="width: 40%;">
         <a asp-area="" asp-controller="SendMoney" asp-action="Index" class="btn btn-primary d-flex align-items-center justify-content-around me-4" style="width: 30%;">
@@ -13,7 +20,7 @@
                 Send Money
             </p>
         </a>
-        <a class="btn btn-light d-flex align-items-center justify-content-around " style="width: 30%;">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-light d-flex align-items-center justify-content-around " style="width: 30%;">
             <p class="action-buttons-text text-dark">
                 Go Back
             </p>

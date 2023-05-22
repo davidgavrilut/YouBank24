@@ -30,15 +30,13 @@ function displayUsers(users) {
         sendMoneyContainer.appendChild(sendMoneyItem);
 
         sendMoneyItem.addEventListener("click", (e) => {
-            // if another element is selected, remove extra elements
             if (selectedSendMoneyItem) {
                 selectedSendMoneyItem.classList.remove('send-money-item-selected');
                 selectedSendMoneyItem.classList.add('send-money-item');
                 selectedSendMoneyItem.querySelector('.close-icon')?.remove();
-                document.querySelector('#amountContainer')?.remove();
+                document.querySelector('#inputContainer')?.classList.add("d-none");
             }
 
-            // adding extra parts
             selectedSendMoneyItem = e.target.closest('.send-money-item');
             selectedSendMoneyItem.classList.remove('send-money-item');
             selectedSendMoneyItem.classList.add('send-money-item-selected');
@@ -48,27 +46,20 @@ function displayUsers(users) {
             closeIcon.src = '/img/x-white.png';
             closeIconContainer.appendChild(closeIcon);
 
-            const amountContainer = document.createElement('div');
-            amountContainer.classList.add(...['d-flex', 'align-items-center', 'w-50', 'p-3', 'mb-3']);
-            amountContainer.id = 'amountContainer';
-            const amountLabel = document.createElement('p');
-            amountLabel.classList.add('me-3');
-            amountLabel.textContent = 'Amount';
-            amountContainer.appendChild(amountLabel);
-            const amountInput = document.createElement('input');
-            amountInput.classList.add(...['form-control', 'w-25']);
-            amountInput.type = "text";
-            amountContainer.appendChild(amountInput);
-            selectedSendMoneyItem.insertAdjacentHTML("afterend", amountContainer.outerHTML);
+            const inputContainer = document.querySelector("#inputContainer");
+            inputContainer.classList.remove("d-none");
+            inputContainer.parentNode.removeChild(inputContainer);
+            selectedSendMoneyItem.insertAdjacentHTML("afterend", inputContainer.outerHTML);
+            const inputEmail = document.querySelector("#inputEmail");
+            inputEmail.value = item.email;
 
-            // on x click, remove extra parts from selected element
             closeIconContainer.addEventListener("click", (e) => {
                 if (e.target.closest('.close-icon')) {
                     e.stopPropagation();
                     selectedSendMoneyItem.classList.remove('send-money-item-selected');
                     selectedSendMoneyItem.classList.add('send-money-item');
                     selectedSendMoneyItem.querySelector('.close-icon')?.remove();
-                    document.querySelector('#amountContainer')?.remove();
+                    document.querySelector('#inputContainer')?.classList.add("d-none");
                     selectedSendMoneyItem = null;
                 }
             })

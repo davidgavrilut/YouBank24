@@ -28,7 +28,7 @@ public class SendMoneyController : Controller {
         IEnumerable<ApplicationUser> users = _unitOfWork.ApplicationUser.GetAll(x => x.Id != _claim.Value);
         List<object> usersBriefData = new List<object>();
         foreach(var user in users) {
-            usersBriefData.Add( new { id = user.Id, firstName = user.FirstName, lastName = user.LastName, email = user.Email });
+            usersBriefData.Add( new { firstName = user.FirstName, lastName = user.LastName, email = user.Email });
         }
         return Json(usersBriefData);
     }   
