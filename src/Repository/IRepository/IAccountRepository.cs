@@ -2,9 +2,7 @@
 
 namespace YouBank24.Repository.IRepository; 
 public interface IAccountRepository : IRepository<Account> {
-    void Add(Account account);
-    void Remove(Account account);
-    void Update(Account account);
+    void Update(string applicationUserId, float amount);
     string GenerateCardNumber();
     string GenerateCVV();
     string GenerateIBAN();

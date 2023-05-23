@@ -11,16 +11,11 @@ public class AccountRepository : Repository<Account>, IAccountRepository {
         rand = new Random();
     }
 
-    public void Add(Account account) {
-        dbSet.Add(account);
-    }
-
-    public void Remove(Account account) {
-        dbSet.Remove(account);
-    }
-
-    public void Update(Account account) {
-        _db.Accounts.Update(account);
+    public void Update(string applicationUserId, float amount) {
+        var objFromDb = _db.Accounts.FirstOrDefault(u => u.ApplicationUserId == applicationUserId);
+            if (objFromDb != null) {
+            objFromDb.Balance += amount;
+            }
     }
 
     public string GenerateCardNumber() {

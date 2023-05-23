@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using YouBank24.Data;
+using YouBank24.Models;
 using YouBank24.Repository.IRepository;
 
 namespace YouBank24.Repository; 
@@ -29,4 +30,13 @@ public class Repository<T> : IRepository<T> where T : class {
         IQueryable<T> query = dbSet.Where(expression);
         return query.FirstOrDefault() ?? throw new InvalidOperationException("No results found.");
     }
+
+    public void Add(T entity) {
+        dbSet.Add(entity);
+    }
+
+    public void Remove(T entity) {
+        dbSet.Remove(entity);
+    }
+
 }
