@@ -2,6 +2,14 @@
 const sendMoneyButton = document.querySelector('.action-buttons > .btn-primary');
 let selectedSendMoneyItem = null;
 
+function validateInput(title, message) {
+    Swal.fire({
+        icon: 'error',
+        title: title,
+        text: message
+    })
+}
+
 function displayUsers(users) {
     users.forEach((item, index) => {
         const sendMoneyItem = document.createElement('div');
@@ -77,13 +85,13 @@ fetch("/SendMoney/GetUserBalance").then(data => data.json())
     .then(res => {
         sendMoneyButton.addEventListener("click", (e) => {
             const inputAmount = document.querySelector('#inputAmount');
-            if (inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
+            if (inputAmount.value == '' || inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
                 e.preventDefault();
-                alert("Amount must a number be greater than 0");
+                validateInput("Invalid amount","After you have selected a recepient, enter an amount value greater than 0.");
             }
             if (inputAmount.value > res) {
                 e.preventDefault();
-                alert("Amount cannot be greater than the current balance");
+                validateInput("Invalid amount", "Amount cannot be greater than your current balance.");
             }
         })
     })
