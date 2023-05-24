@@ -52,6 +52,13 @@ public class SendMoneyController : Controller {
             usersBriefData.Add( new { firstName = user.FirstName, lastName = user.LastName, email = user.Email });
         }
         return Json(usersBriefData);
-    }   
+    }
+
+    public IActionResult GetUserBalance() {
+        _claimsIdentity = (ClaimsIdentity)User.Identity;
+        _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+        var balance = _unitOfWork.Account.GetFirstOrDefault(a => a.ApplicationUserId == _claim.Value).Balance;
+        return Json(balance);
+    }
     #endregion
 }
