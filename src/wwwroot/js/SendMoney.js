@@ -85,13 +85,18 @@ fetch("/SendMoney/GetUserBalance").then(data => data.json())
     .then(res => {
         sendMoneyButton.addEventListener("click", (e) => {
             const inputAmount = document.querySelector('#inputAmount');
-            if (inputAmount.value == '' || inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
+            const inputContainer = document.querySelector('#inputContainer');
+            if (inputContainer.classList.contains('d-none')) {
                 e.preventDefault();
-                validateInput("Invalid amount","After you have selected a recepient, enter an amount value greater than 0.");
+                validateInput("No recepient selected", "Please select a recepient.");
             }
-            if (inputAmount.value > res) {
+            else if (inputAmount.value == '' || inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
                 e.preventDefault();
-                validateInput("Invalid amount", "Amount cannot be greater than your current balance.");
+                validateInput("Invalid amount", "Please enter an amount value greater than 0.");
+            }
+            else if (inputAmount.value > res) {
+                e.preventDefault();
+                validateInput("Insufficient balance", "Amount cannot be greater than your current balance.");
             }
         })
     })
