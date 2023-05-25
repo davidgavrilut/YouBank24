@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/sendMoney.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/YouBank24.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
     <header>
@@ -34,6 +35,7 @@
     </header>
 	<div>
 		<main role="main" class="pb-3">
+            <partial name="_Notification" />
 			@RenderBody()
 		</main>
 	</div>

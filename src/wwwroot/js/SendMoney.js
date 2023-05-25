@@ -89,7 +89,7 @@ fetch("/SendMoney/GetUserBalance").then(data => data.json())
             const inputContainer = document.querySelector('#inputContainer');
             if (inputContainer.classList.contains('d-none')) {
                 e.preventDefault();
-                displayAlert("No recepient selected", "Please select a recepient.");
+                displayAlert("No recipient selected", "Please select a recipient.");
             }
             else if (inputAmount.value == '' || inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
                 e.preventDefault();
