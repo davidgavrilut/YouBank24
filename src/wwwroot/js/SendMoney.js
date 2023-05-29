@@ -1,4 +1,4 @@
-﻿const sendMoneyContainer = document.querySelector('.send-money-container');
+﻿const sendMoneyContainer = document.querySelector('.items-container');
 const sendMoneyButton = document.querySelector('.action-buttons > .btn-primary');
 let selectedSendMoneyItem = null;
 
@@ -7,22 +7,22 @@ function displayUsers(users) {
     users.forEach((item, index) => {
         const sendMoneyItem = document.createElement('div');
         sendMoneyItem.setAttribute('order-index', index);
-        sendMoneyItem.classList.add(...['send-money-item', 'd-flex', 'justify-content-evenly', 'align-items-center', 'mb-3']);
+        sendMoneyItem.classList.add(...['item', 'd-flex', 'justify-content-evenly', 'align-items-center', 'mb-3']);
         const userImageContainer = document.createElement('div');
         userImageContainer.classList.add(...['col-2', 'd-flex', 'justify-content-center', 'align-items-center', 'flex-column']);
         const userImage = document.createElement('img');
-        userImage.classList.add('send-money-img');
+        userImage.classList.add('item-img');
         userImage.src = '/img/user.png';
         userImageContainer.appendChild(userImage);
         sendMoneyItem.appendChild(userImageContainer);
         const userDetailsContainer = document.createElement('div');
         userDetailsContainer.classList.add(...['col-8', 'd-flex', 'justify-content-center', 'flex-column', 'ms-2']);
         const userName = document.createElement('p');
-        userName.classList.add(...['send-money-name', 'text-uppercase']);
+        userName.classList.add(...['item-name', 'text-uppercase']);
         userName.textContent = `${item.firstName} ${item.lastName}`;
         userDetailsContainer.appendChild(userName);
         const userEmail = document.createElement('p');
-        userEmail.classList.add('send-money-email');
+        userEmail.classList.add('item-email');
         userEmail.textContent = item.email;
         userDetailsContainer.appendChild(userEmail);
         sendMoneyItem.appendChild(userDetailsContainer);
@@ -34,13 +34,13 @@ function displayUsers(users) {
         sendMoneyItem.addEventListener("click", (e) => {
             if (selectedSendMoneyItem) {
                 selectedSendMoneyItem.classList.remove('send-money-item-selected');
-                selectedSendMoneyItem.classList.add('send-money-item');
+                selectedSendMoneyItem.classList.add('item');
                 selectedSendMoneyItem.querySelector('.close-icon')?.remove();
                 document.querySelector('#inputContainer')?.classList.add("d-none");
             }
 
-            selectedSendMoneyItem = e.target.closest('.send-money-item');
-            selectedSendMoneyItem.classList.remove('send-money-item');
+            selectedSendMoneyItem = e.target.closest('.item');
+            selectedSendMoneyItem.classList.remove('item');
             selectedSendMoneyItem.classList.add('send-money-item-selected');
 
             const closeIcon = document.createElement('img');
@@ -59,7 +59,7 @@ function displayUsers(users) {
                 if (e.target.closest('.close-icon')) {
                     e.stopPropagation();
                     selectedSendMoneyItem.classList.remove('send-money-item-selected');
-                    selectedSendMoneyItem.classList.add('send-money-item');
+                    selectedSendMoneyItem.classList.add('item');
                     selectedSendMoneyItem.querySelector('.close-icon')?.remove();
                     document.querySelector('#inputContainer')?.classList.add("d-none");
                     selectedSendMoneyItem = null;
