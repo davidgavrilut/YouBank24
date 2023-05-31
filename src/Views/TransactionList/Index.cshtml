@@ -6,13 +6,9 @@
            Transaction History
         </h2>
     </div>
-    <div class="d-flex align-items-center justify-content-center w-50">
-        <button class="btn btn-outline-danger me-2 w-25" data-bs-toggle="button" aria-pressed="false">Sent</button>
-        <button class="btn btn-outline-success w-25" data-bs-toggle="button" aria-pressed="false">Received</button>
+    <div id="filterButtons" class="d-flex align-items-center justify-content-center w-50">
     </div>
     <div class="items-container d-flex justify-content-start align-items-center flex-column w-100">
-        <div order-index="0" class="item d-flex justify-content-evenly align-items-center mb-3"><div class="col-2 d-flex justify-content-center align-items-center flex-column"><img class="item-img" src="/img/user.png"></div><div class="col-8 d-flex justify-content-center flex-column ms-2"><p class="item-name text-uppercase">Joseph Tribbiani</p><p class="item-email">joseph.tribbiani@email.com</p></div><div class="col-2 d-flex justify-content-center align-items-center"><p class="item-name text-uppercase" style="color: #ff7373;">- $150</p></div></div>
-        <div order-index="1" class="item d-flex justify-content-evenly align-items-center mb-3"><div class="col-2 d-flex justify-content-center align-items-center flex-column"><img class="item-img" src="/img/user.png"></div><div class="col-8 d-flex justify-content-center flex-column ms-2"><p class="item-name text-uppercase">Kevin Malone</p><p class="item-email">kevin.malone@email.com</p></div><div class="col-2 d-flex justify-content-center align-items-center"><p class="item-name text-uppercase" style="color: #6fff6f;">+ $375</p></div></div>
 </div>
     <div class="action-buttons d-flex justify-content-center mb-5 w-50">
         <a asp-controller="Home" asp-action="Index" class="btn btn-light d-flex align-items-center justify-content-around " style="width: 30%;">
