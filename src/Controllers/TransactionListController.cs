@@ -40,7 +40,7 @@ public class TransactionListController : Controller {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == sendingUserAccountId);
-                transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timeStamp = transaction.TransactionTimestamp });
+                transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp });
             }
         }
         return Json(new {transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });

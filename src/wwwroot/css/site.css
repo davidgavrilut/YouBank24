@@ -157,6 +157,21 @@ input:-webkit-autofill:focus {
     font-style: italic;
 }
 
+.item-timestamp {
+    font-family: Roboto Thin;
+    font-style: italic;
+    color: #c5c5c5;
+}
+
+.hr-transaction {
+    margin: 0.75rem 0;
+    color: white;
+    border: 0;
+    border-top: 1px solid;
+    opacity: .25;
+    width: 75%;
+}
+
 .send-money-item-selected {
     width: 50%;
     border: 1px solid #22296733;

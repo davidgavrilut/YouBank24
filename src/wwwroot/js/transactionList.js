@@ -22,6 +22,13 @@ function displayTransactions(item, index, color, symbol) {
     userEmail.classList.add('item-email');
     userEmail.textContent = item.email;
     userDetailsContainer.appendChild(userEmail);
+    const hr = document.createElement('hr');
+    hr.classList.add('hr-transaction');
+    userDetailsContainer.appendChild(hr);
+    const timestamp = document.createElement('p');
+    timestamp.classList.add('item-timestamp');
+    timestamp.textContent = item.timestamp;
+    userDetailsContainer.appendChild(timestamp);
     transaction.appendChild(userDetailsContainer);
     const amountContainer = document.createElement('div');
     amountContainer.classList.add(...['col-3', 'd-flex', 'justify-content-center', 'align-items-center']);
@@ -62,6 +69,5 @@ fetch('/TransactionList/GetTransactions')
                 displayTransactions(item, index, '#6fff6f', '+');
             });
         });
-
         sentBtn.click();
     });
