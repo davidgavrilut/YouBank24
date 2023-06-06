@@ -42,6 +42,16 @@ function displayTransactions(item, index, color, symbol) {
     itemsContainer.appendChild(transaction);
 }
 
+function noTransactions(text) {
+    const noTransaction = document.createElement('div');
+    noTransaction.classList.add(...['no-transactions', 'd-flex', 'justify-content-center', 'align-items-center']);
+    const noTransactionText = document.createElement('p');
+    noTransactionText.classList.add('no-transactions-text');
+    noTransactionText.textContent = text;
+    noTransaction.appendChild(noTransactionText);
+    itemsContainer.appendChild(noTransaction);
+}
+
 fetch('/TransactionList/GetTransactions')
     .then(data => data.json())
     .then(res => {
@@ -57,6 +67,9 @@ fetch('/TransactionList/GetTransactions')
             sentBtn.classList.add('active');
             receivedBtn.classList.remove('active');
             itemsContainer.innerHTML = '';
+            if (res.transactionsSent.length == 0) {
+                noTransactions('No transactions sent');
+            }
             res.transactionsSent.forEach((item, index) => {
                 displayTransactions(item, index, '#ff7373', '-');
             });
@@ -65,6 +78,9 @@ fetch('/TransactionList/GetTransactions')
             receivedBtn.classList.add('active');
             sentBtn.classList.remove('active');
             itemsContainer.innerHTML = '';
+            if (res.transactionsReceived.length == 0) {
+                noTransactions('No transactions received');
+            }
             res.transactionsReceived.forEach((item, index) => {
                 displayTransactions(item, index, '#6fff6f', '+');
             });

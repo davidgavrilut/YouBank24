@@ -4,9 +4,9 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html, body {
@@ -108,7 +108,8 @@ p {
 }
 
 .link-hover-behavior:hover {
-    background-color: transparent; !important
+    background-color: transparent;
+    !important
 }
 
 input:-webkit-autofill {
@@ -116,7 +117,7 @@ input:-webkit-autofill {
     -webkit-text-fill-color: white;
 }
 
-input:-webkit-autofill:focus {
+    input:-webkit-autofill:focus {
         -webkit-box-shadow: 0 0 0 50px #242c8f inset;
         -webkit-text-fill-color: white;
     }
@@ -130,10 +131,17 @@ input:-webkit-autofill:focus {
     border: 1px solid #8a86c7;
     padding: 15px;
     border-radius: 10px;
+}
+
+.item-send {
+    width: 50%;
+    border: 1px solid #8a86c7;
+    padding: 15px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
-    .item:hover {
+    .item-send:hover {
         background: rgb(255 255 255 / 5%);
     }
 
@@ -170,6 +178,19 @@ input:-webkit-autofill:focus {
     border-top: 1px solid;
     opacity: .25;
     width: 75%;
+}
+
+.no-transactions {
+    width: 50%;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.no-transactions-text {
+    font-family: Roboto Thin;
+    font-style: italic;
+    color: #c5c5c5;
+    font-size: 21px;
 }
 
 .send-money-item-selected {
