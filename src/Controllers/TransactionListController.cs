@@ -30,7 +30,7 @@ public class TransactionListController : Controller {
         foreach (Transaction transaction in transactionsSent) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == transaction.ReceiverUserId);
-                transactionsSentList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp });
+                transactionsSentList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
             }
         }
         string sendingUserAccountId = null;
@@ -40,7 +40,7 @@ public class TransactionListController : Controller {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == sendingUserAccountId);
-                transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp });
+                transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
             }
         }
         return Json(new {transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
