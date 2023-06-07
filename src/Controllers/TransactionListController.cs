@@ -26,7 +26,7 @@ public class TransactionListController : Controller {
         _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
         string loggedUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.ApplicationUserId == _claim.Value).AccountId;
         IEnumerable<Transaction> transactionsSent = _unitOfWork.Transaction.GetAll(t => t.AccountId == loggedUserAccountId);
-        List<object> transactionsSentList = new List<object>();
+        List<dynamic> transactionsSentList = new List<dynamic>();
         foreach (Transaction transaction in transactionsSent) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == transaction.ReceiverUserId);
@@ -35,7 +35,7 @@ public class TransactionListController : Controller {
         }
         string sendingUserAccountId = null;
         IEnumerable<Transaction> transactionsReceived = _unitOfWork.Transaction.GetAll(t => t.ReceiverUserId == _claim.Value);
-        List<object> transactionsReceivedList = new List<object>();
+        List<dynamic> transactionsReceivedList = new List<dynamic>();
         foreach (Transaction transaction in transactionsReceived) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
@@ -43,6 +43,10 @@ public class TransactionListController : Controller {
                 transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
             }
         }
+
+        transactionsSentList = transactionsSentList.OrderByDescending(t => t.timestamp).ToList();
+        transactionsReceivedList = transactionsReceivedList.OrderByDescending(t => t.timestamp).ToList();
+
         return Json(new {transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
     }
     #endregion
