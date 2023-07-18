@@ -28,6 +28,7 @@ public class HomeController : Controller {
         }
     }
 
+    [Route("Main")]
     public IActionResult MainAccount() {
         _claimsIdentity = (ClaimsIdentity)User.Identity;
         _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);

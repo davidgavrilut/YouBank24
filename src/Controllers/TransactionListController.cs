@@ -16,6 +16,7 @@ public class TransactionListController : Controller {
         _unitOfWork = unitOfWork;
     }
 
+    [Route("Transactions")]
     public IActionResult Index() {
         return View();
     }

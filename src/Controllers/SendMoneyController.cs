@@ -17,6 +17,7 @@ public class SendMoneyController : Controller {
         _unitOfWork = unitOfWork;
     }
 
+    [Route("Send")]
     public IActionResult Index() {
         return View();
     }
