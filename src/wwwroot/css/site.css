@@ -74,6 +74,11 @@ p {
     margin: 0 5% 0 0;
 }
 
+.main-title-container {
+    padding-top: 4%;
+    padding-right: 3%;
+}
+
 .main-title {
     font-size: 5rem;
     color: white;
@@ -230,8 +235,14 @@ input:-webkit-autofill {
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-    /*...*/
+@media only screen and (min-width: 1200px) and (max-width: 1899px) {
+    .main-title {
+        font-size: 4.2rem;
+    }
+
+    .secondary-title {
+        font-size: 1.6rem;
+    }
 }
 
 @media only screen and (min-width: 1921px) {

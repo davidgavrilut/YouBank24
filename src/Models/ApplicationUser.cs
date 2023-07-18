@@ -16,6 +16,7 @@ public class ApplicationUser : IdentityUser {
     [Required]
     public string Address { get; set; }
     [Required]
+    [DisplayName("Postal Code")]
     public string PostalCode { get; set; }
     [Required]
     public string City { get; set; }
