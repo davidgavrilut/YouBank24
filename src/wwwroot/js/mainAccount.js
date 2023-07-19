@@ -1,4 +1,7 @@
-﻿function showButton(balance) {
+﻿const spinner = document.getElementById('loading-icon');
+const mainAccountContainer = document.querySelector('.main-account-container');
+
+function showButton(balance) {
     let button = document.querySelector("#balanceButton");
     button.addEventListener("click", () => {
             if (button.textContent === "SHOW") {
@@ -17,8 +20,12 @@ function displayHiddenCardNumber(text) {
     hiddenCardNumber.textContent = finalString;
 }
 
+spinner.style.display = 'block';
+
 fetch("/Home/GetAccountCardNumberBalance").then(data => data.json())
     .then(res => {
         showButton(res.balance);
         displayHiddenCardNumber(res.cardNumber);
+        spinner.style.display = 'none';
+        mainAccountContainer.classList.remove('blur-spin');
 })

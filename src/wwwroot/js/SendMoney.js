@@ -45,7 +45,7 @@ function displayUsers(users) {
 
             const closeIcon = document.createElement('img');
             closeIcon.classList.add('close-icon');
-            closeIcon.src = '/img/x-white.png';
+            closeIcon.src = '/img/close.png';
             closeIconContainer.appendChild(closeIcon);
 
             const inputContainer = document.querySelector("#inputContainer");
