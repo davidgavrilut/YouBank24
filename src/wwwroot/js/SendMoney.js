@@ -1,5 +1,7 @@
 ﻿const sendMoneyContainer = document.querySelector('.items-container');
 const sendMoneyButton = document.querySelector('.action-buttons > .btn-primary');
+const spinner = document.getElementById('loading-icon');
+const itemsContainer = document.querySelector('.items-container');
 let selectedSendMoneyItem = null;
 
 
@@ -77,9 +79,13 @@ function displayAlert(title, message) {
     })
 }
 
+spinner.style.display = 'block';
+
 fetch("/SendMoney/GetSendMoneyData").then(data => data.json())
     .then(res => {
         displayUsers(res);
+        spinner.style.display = 'none';
+        itemsContainer.classList.remove('blur-spin');
     })
 
 fetch("/SendMoney/GetUserBalance").then(data => data.json())

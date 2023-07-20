@@ -1,5 +1,6 @@
 ﻿const itemsContainer = document.querySelector('.items-container');
 const filterButtons = document.querySelector('#filterButtons');
+const spinner = document.getElementById('loading-icon');
 
 function displayTransactions(item, index, color, symbol) {
     const transaction = document.createElement('div');
@@ -52,6 +53,8 @@ function noTransactions(text) {
     itemsContainer.appendChild(noTransaction);
 }
 
+spinner.style.display = 'block';
+
 fetch('/TransactionList/GetTransactions')
     .then(data => data.json())
     .then(res => {
@@ -86,4 +89,6 @@ fetch('/TransactionList/GetTransactions')
             });
         });
         sentBtn.click();
+        spinner.style.display = 'none';
+        itemsContainer.classList.remove('blur-spin');
     });
