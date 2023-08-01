@@ -174,12 +174,17 @@ input:-webkit-autofill {
     min-height: 550px;
 }
 
-.item {
+.item-transaction {
     width: 50%;
     border: 1px solid #8a86c7;
     padding: 15px;
     border-radius: 10px;
+    cursor: pointer;
 }
+
+    .item-transaction:hover {
+        background: rgba(255,255,255,0.05);
+    }
 
 .item-send {
     width: 50%;

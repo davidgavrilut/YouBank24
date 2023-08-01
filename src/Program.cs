@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseHsts();
 }
 
-app.UseMiddleware<TestingCustomMiddleware>();
+//app.UseMiddleware<TestingCustomMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

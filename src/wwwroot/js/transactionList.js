@@ -5,7 +5,7 @@ const spinner = document.getElementById('loading-icon');
 function displayTransactions(item, index, color, symbol) {
     const transaction = document.createElement('div');
     transaction.setAttribute('order-index', index);
-    transaction.classList.add(...['item', 'd-flex', 'justify-content-evenly', 'align-items-center', 'mb-3']);
+    transaction.classList.add(...['item-transaction', 'd-flex', 'justify-content-evenly', 'align-items-center', 'mb-3']);
     const userImageContainer = document.createElement('div');
     userImageContainer.classList.add(...['col-2', 'd-flex', 'justify-content-center', 'align-items-center', 'flex-column']);
     const userImage = document.createElement('img');
@@ -41,6 +41,12 @@ function displayTransactions(item, index, color, symbol) {
     amountContainer.appendChild(amount);
     transaction.appendChild(amountContainer);
     itemsContainer.appendChild(transaction);
+
+    transaction.addEventListener('click', () => {
+        const detailsBtn = document.querySelector('#details');
+        detailsBtn.href = '/TransactionList/TransactionDetails/' + item.id;
+        detailsBtn.click();
+    })
 }
 
 function noTransactions(text) {
@@ -55,7 +61,7 @@ function noTransactions(text) {
 
 spinner.style.display = 'block';
 
-fetch('/TransactionList/GetTransactions')
+fetch('/GetTransactions')
     .then(data => data.json())
     .then(res => {
         const sentBtn = document.createElement('button');

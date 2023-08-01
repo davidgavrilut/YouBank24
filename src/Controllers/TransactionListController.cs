@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using YouBank24.Models;
+using YouBank24.Models.ViewModels;
 using YouBank24.Repository.IRepository;
 using YouBank24.Utils;
 
@@ -16,12 +18,43 @@ public class TransactionListController : Controller {
         _unitOfWork = unitOfWork;
     }
 
-    [Route("Transactions")]
     public IActionResult Index() {
         return View();
     }
 
+    [AutoValidateAntiforgeryToken]
+    [Authorize] 
+    public IActionResult TransactionDetails(string id) {
+        /*
+        select u2.FirstName, u2.LastName, u2.Email, u.FirstName, u.LastName, u.Email, t.Amount from Transactions as t
+        inner join Accounts as a on t.AccountId = a.AccountId
+        inner join AspNetUsers as u on t.ReceiverUserId = u.Id
+        inner join AspNetUsers as u2 on a.ApplicationUserId = u2.id
+        where TransactionId = '00ff9766-e0ce-4349-88ec-5f87a5a563d1'
+        */
+
+        var transaction = _unitOfWork.Transaction.GetFirstOrDefault(t => t.TransactionId == id);
+        var receiverUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(r => r.Id == transaction.ReceiverUserId);
+        var senderUserId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
+        var senderUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(s => s.Id == senderUserId);
+
+        var transactionDetailsViewModel = new TransactionDetailsViewModel {
+            SenderFirstName = senderUser.FirstName,
+            SenderLastName = senderUser.LastName,
+            SenderEmail = senderUser.Email,
+            ReceiverFirstName = receiverUser.FirstName,
+            ReceiverLastName = receiverUser.LastName,
+            ReceiverEmail = receiverUser.Email,
+            Amount = transaction.Amount,
+            Timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm")
+        };
+
+        return View("TransactionDetails", transactionDetailsViewModel);
+
+    }
+
     #region API CALLS
+    [HttpGet("GetTransactions")]
     public IActionResult GetTransactions() {
         _claimsIdentity = (ClaimsIdentity)User.Identity;
         _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -31,7 +64,7 @@ public class TransactionListController : Controller {
         foreach (Transaction transaction in transactionsSent) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == transaction.ReceiverUserId);
-                transactionsSentList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
+                transactionsSentList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
             }
         }
         string sendingUserAccountId = null;
@@ -41,7 +74,7 @@ public class TransactionListController : Controller {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == sendingUserAccountId);
-                transactionsReceivedList.Add(new { name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
+                transactionsReceivedList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
             }
         }
 
