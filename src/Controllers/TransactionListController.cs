@@ -25,14 +25,6 @@ public class TransactionListController : Controller {
     [AutoValidateAntiforgeryToken]
     [Authorize] 
     public IActionResult TransactionDetails(string id) {
-        /*
-        select u2.FirstName, u2.LastName, u2.Email, u.FirstName, u.LastName, u.Email, t.Amount from Transactions as t
-        inner join Accounts as a on t.AccountId = a.AccountId
-        inner join AspNetUsers as u on t.ReceiverUserId = u.Id
-        inner join AspNetUsers as u2 on a.ApplicationUserId = u2.id
-        where TransactionId = '00ff9766-e0ce-4349-88ec-5f87a5a563d1'
-        */
-
         var transaction = _unitOfWork.Transaction.GetFirstOrDefault(t => t.TransactionId == id);
         var receiverUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(r => r.Id == transaction.ReceiverUserId);
         var senderUserId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
@@ -50,7 +42,6 @@ public class TransactionListController : Controller {
         };
 
         return View("TransactionDetails", transactionDetailsViewModel);
-
     }
 
     #region API CALLS
