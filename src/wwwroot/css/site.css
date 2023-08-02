@@ -109,7 +109,7 @@ p {
 }
 
 .action-buttons {
-    width: 40%;
+    width: 45%;
 }
 
 .action-buttons > .btn-primary {
@@ -268,6 +268,11 @@ input:-webkit-autofill {
     .close-icon:hover {
         filter: brightness(0.85);
     }
+
+.note-textarea {
+    height: 2.5rem;
+    max-height: 5rem;
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {

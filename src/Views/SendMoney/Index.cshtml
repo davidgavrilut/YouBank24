@@ -10,9 +10,11 @@
 ">Send Money Instantly</h2>
     </div>
         <div class="items-container d-flex justify-content-start align-items-center flex-column w-100 blur-spin">
-            <div id="inputContainer" class="input-amount d-none d-flex align-items-center p-3 mb-3">
+        <div id="inputContainer" class="input-amount d-none d-flex align-items-center p-3 mb-3">
             <p class="text-uppercase me-3" style="letter-spacing: 0.25rem;">Amount:</p>
             <input id="inputAmount" class="form-control w-25" asp-for="Amount" type="number" />
+                <p class="text-uppercase me-3 ms-4" style="letter-spacing: 0.25rem;">Note:</p>
+            <textarea class="note-textarea form-control w-50" asp-for="Note"></textarea>
             <input hidden id="inputEmail" class="form-control w-25" type="text" name="email" />
         </div>
     </div>

@@ -8,6 +8,7 @@
         public string ReceiverEmail { get; set; }
         public float Amount { get; set; }
         public string Timestamp { get; set; }
+        public string Note { get; set; }
         public Transaction Transaction { get; set; }
         public Account Account { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

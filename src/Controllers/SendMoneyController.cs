@@ -39,7 +39,11 @@ public class SendMoneyController : Controller {
             transaction.TransactionStatus = StaticDetails.StatusSuccess;
             _unitOfWork.Transaction.Add(transaction);
             _unitOfWork.Save();
-            TempData["success"] = "$" + transaction.Amount + " was successfully sent to " + receiverUser.FirstName + " " + receiverUser.LastName + ".";
+            if (transaction.Note?.Length > 0) {
+                TempData["success"] = "$" + transaction.Amount + " was successfully sent to " + receiverUser.FirstName + " " + receiverUser.LastName + " with the note \"" + transaction.Note + "\"";
+            } else {
+                TempData["success"] = "$" + transaction.Amount + " was successfully sent to " + receiverUser.FirstName + " " + receiverUser.LastName + ".";
+            }
             return RedirectToAction("Index", "Home");
         } else {
             return RedirectToAction("Index", "SendMoney");

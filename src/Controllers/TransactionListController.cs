@@ -38,7 +38,8 @@ public class TransactionListController : Controller {
             ReceiverLastName = receiverUser.LastName,
             ReceiverEmail = receiverUser.Email,
             Amount = transaction.Amount,
-            Timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm")
+            Timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss"),
+            Note = transaction.Note ?? ""
         };
 
         return View("TransactionDetails", transactionDetailsViewModel);
@@ -55,7 +56,7 @@ public class TransactionListController : Controller {
         foreach (Transaction transaction in transactionsSent) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == transaction.ReceiverUserId);
-                transactionsSentList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
+                transactionsSentList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
             }
         }
         string sendingUserAccountId = null;
@@ -65,7 +66,7 @@ public class TransactionListController : Controller {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
                 sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
                 var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == sendingUserAccountId);
-                transactionsReceivedList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm") });
+                transactionsReceivedList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
             }
         }
 

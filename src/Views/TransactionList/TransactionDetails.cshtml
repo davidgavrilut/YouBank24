@@ -1,10 +1,96 @@
 ﻿@model YouBank24.Models.ViewModels.TransactionDetailsViewModel
 
-<p>@Model.SenderFirstName</p>
-<p>@Model.SenderLastName</p>
-<p>@Model.SenderEmail</p>
-<p>@Model.ReceiverFirstName</p>
-<p>@Model.ReceiverLastName</p>
-<p>@Model.ReceiverEmail</p>
-<p>@Model.Amount</p>
-<p>@Model.Timestamp</p>
+<div style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+">
+    <div class="header">
+        <h2 class="main-title text-uppercase mb-0" style="
+    font-size: 60px;
+">
+            TRANSACTION DETAILS
+        </h2>
+    </div>
+    <div class="mt-2 mb-3" style="
+    border: 1px solid #5e5ca3;
+    padding: 2rem;
+    width: 50%;
+    border-radius: 10px;
+    background: #ffffff0a;
+    box-shadow: 20px 25px 0px 0px #370c3340;
+">
+        <div>
+            <h3 style="
+    margin-bottom: 0;
+">
+                From: @Model.SenderFirstName @Model.SenderLastName
+            </h3>
+
+
+            <div>
+                <p style="
+    font-weight: 200;
+">@Model.SenderEmail</p>
+            </div>
+        </div>
+        <hr style="
+    color: white;
+">
+        <div>
+            <h3 style="
+    margin-bottom: 0;
+">
+                To: @Model.ReceiverFirstName @Model.ReceiverLastName
+            </h3>
+
+
+            <div>
+                <p style="
+    font-weight: 200;
+">@Model.ReceiverEmail</p>
+            </div>
+        </div>
+        <hr style="
+    color: white;
+">
+
+        <div style="
+">
+            <p style="
+    font-weight: 200;
+">@Model.Timestamp</p>
+        </div>
+        <div class="mb-4">
+        @if(Model.Note != "") {
+            <p>
+                Note: <span style="
+    font-style: italic;
+    font-weight: 200;
+">"@Model.Note"</span>
+            </p>
+        }
+        </div>
+        <div>
+            <h3 style="
+    margin-bottom: 0;
+">
+                $@Model.Amount
+            </h3>
+        </div>
+    </div>
+    <div class="mt-4" style="
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+">
+        <a class="btn btn-light d-flex align-items-center justify-content-center " style="width: 30%;" href="/TransactionList">
+            <p class="action-buttons-text text-dark" style="margin: 0;">
+                Go Back
+            </p>
+        </a>
+    </div>
+</div>
