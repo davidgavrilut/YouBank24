@@ -132,6 +132,13 @@ p {
     margin-bottom: 30px;
 }
 
+.main-title-details {
+    color: white;
+    font-family: Roboto Thin;
+    margin-bottom: 30px;
+    font-size: 3.5rem;
+}
+
 .secondary-title {
     color: white;
     font-family: Roboto Thin;
@@ -272,6 +279,15 @@ input:-webkit-autofill {
 .note-textarea {
     height: 2.5rem;
     max-height: 5rem;
+}
+
+.transaction-details-container {
+    border: 1px solid #5e5ca3;
+    padding: 2rem;
+    width: 50%;
+    border-radius: 10px;
+    background: #ffffff0a;
+    box-shadow: 20px 25px 0px 0px #370c3340;
 }
 
 /* Extra small devices (phones, 600px and down) */
