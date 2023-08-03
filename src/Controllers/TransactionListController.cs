@@ -18,6 +18,8 @@ public class TransactionListController : Controller {
         _unitOfWork = unitOfWork;
     }
 
+    [AutoValidateAntiforgeryToken]
+    [Authorize]
     public IActionResult Index() {
         return View();
     }

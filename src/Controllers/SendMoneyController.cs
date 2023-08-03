@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using YouBank24.Models;
 using YouBank24.Repository.IRepository;
@@ -18,12 +19,15 @@ public class SendMoneyController : Controller {
     }
 
     [Route("Send")]
+    [AutoValidateAntiforgeryToken]
+    [Authorize]
     public IActionResult Index() {
         return View();
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    [AutoValidateAntiforgeryToken]
+    [Authorize]
     public IActionResult SendMoney(Transaction transaction, string email) {
         if (!ModelState.IsValid) {
             _claimsIdentity = (ClaimsIdentity)User.Identity;

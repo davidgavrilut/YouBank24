@@ -32,7 +32,8 @@
 
             <div>
                 <p style="
-    font-weight: 200;
+    font-weight: 100;
+    font-style: italic;
 ">@Model.SenderEmail</p>
             </div>
         </div>
@@ -49,7 +50,8 @@
 
             <div>
                 <p style="
-    font-weight: 200;
+    font-weight: 100;
+    font-style: italic;
 ">@Model.ReceiverEmail</p>
             </div>
         </div>
@@ -61,7 +63,7 @@
 ">
             <p style="
     font-weight: 200;
-">@Model.Timestamp</p>
+"><span style="font-weight:400">Time of transaction:</span> @Model.Timestamp</p>
         </div>
         <div class="mb-4">
         @if(Model.Note != "") {
