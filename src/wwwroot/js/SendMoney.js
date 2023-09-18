@@ -95,15 +95,15 @@ fetch("/SendMoney/GetUserBalance").then(data => data.json())
             const inputContainer = document.querySelector('#inputContainer');
             if (inputContainer.classList.contains('d-none')) {
                 e.preventDefault();
-                displayAlert("No recipient selected", "Please select a recipient.");
+                displayAlert("No recipient selected", "You need to select a recipient.");
             }
             else if (inputAmount.value == '' || inputAmount.value < 0 || inputAmount.value == 'e' || inputAmount.value == '.') {
                 e.preventDefault();
-                displayAlert("Invalid amount", "Please enter an amount value greater than 0.");
+                displayAlert("Invalid amount", "Please enter an amount value greater than 0");
             }
             else if (inputAmount.value > res) {
                 e.preventDefault();
-                displayAlert("Insufficient balance", "Amount cannot be greater than your current balance.");
+                displayAlert("Insufficient balance", "Amount cannot be greater than your current balance");
             }
         })
     })
