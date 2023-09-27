@@ -9,7 +9,7 @@
         {
             if (note.Length > 0)
             {
-                return $"<h3>New Transaction Sent</h3><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>Ad new transaction has been successfully created on the YouBank24 platform.</p><p>You, {senderFirstName} {senderLastName}, sent ${amount} to {receiverFirstName} {receiverLastName}.</p></p>You also included thte following note: \"{note}\"</p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p style=\"font-style: italic; font-weight: 600\">YouBank Team</p>";
+                return $"<h3>New Transaction Sent</h3><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>A new transaction has been successfully created on the YouBank24 platform.</p><p>You, {senderFirstName} {senderLastName}, sent ${amount} to {receiverFirstName} {receiverLastName}.</p></p>You also included the following note: \"{note}\"</p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p style=\"font-style: italic; font-weight: 600\">YouBank Team</p>";
             } else
             {
                 return $"<h3>New Transaction Sent</h3><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>A new transaction has been successfully created on the YouBank24 platform.</p><p>You, {senderFirstName} {senderLastName}, sent ${amount} to {receiverFirstName} {receiverLastName}.<p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p style=\"font-style: italic; font-weight: 600\">YouBank Team</p>";
