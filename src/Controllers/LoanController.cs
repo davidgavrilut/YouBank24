@@ -17,8 +17,7 @@ namespace YouBank24.Controllers
         }
 
         [HttpGet]
-
-        public async Task<IActionResult> Simulation()
+        public async Task<IActionResult> GetInterest(string country)
         {
             var request = new HttpRequestMessage
             {
@@ -34,6 +33,15 @@ namespace YouBank24.Controllers
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
             return Ok(body);
+        }
+
+        public async Task<IActionResult> Simulate(int amount, int period, string country)
+        {
+            var interest = await GetInterest(country);
+            // calculate monthly
+            // calculate total payable amount
+            // return monthly, total amount, interest
+            return Json(new { });
         }
     }
 }
