@@ -98,7 +98,7 @@
 </div>
 <script type="text/javascript">
     document.querySelector('#runSimulation').addEventListener('click', () => {
-        fetch('/Loan/Simulation').then(data => data.json())
+        fetch('/Loan/GetInterest').then(data => data.json())
             .then(res => {
                 console.log(res);
             })
