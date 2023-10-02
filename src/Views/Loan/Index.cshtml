@@ -1,0 +1,106 @@
+﻿<div class="d-flex flex-column align-items-center" style="gap: 50px; ">
+    <div class="header" style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 60%;
+">
+        <h2 class="main-title text-uppercase mb-3" style="
+    font-size: 60px;
+">
+            Loan Simulation
+        </h2>
+        <p>Run a simulation for your desired personal-needs loan: Enter the amount and period for your loan, and we'll provide you with a detailed simulation! Based on the data you input, we will apply a country-specific interest and calculate the monthly payment and the final payable amount:</p>
+    </div>
+    <div class="inputs" style="
+    width: 50%;
+">
+        <div style="
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+">
+            <p class="text-uppercase me-3 col-md-3" style="letter-spacing: 0.25rem;">Loan Amount:</p>
+            <input id="inputPeriod" class="form-control" type="number" style="
+    width: 45%;
+">
+        </div>
+        <div style="
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+">
+            <p class="text-uppercase me-3 col-md-3" style="letter-spacing: 0.25rem;">Loan Period:</p>
+            <input id="inputPeriod" class="form-control" type="number" style="
+    width: 45%;
+">
+        </div>
+        <div style="
+    display: flex;
+    align-items: center;
+">
+            <p class="text-uppercase me-3 col-md-3" style="letter-spacing: 0.25rem;">Country:</p>
+            <select class="form-select custom-select-blue" name="countries" id="countries" style="width: 45%;">
+                <option value="australia">Australia</option>
+                <option value="brazil">Brazil</option>
+                <option value="canada">Canada</option>
+                <option value="france">France</option>
+                <option value="germany">Germany</option>
+                <option value="hungary">Hungary</option>
+                <option value="usa">United States of America</option>
+                <option value="uk">United Kingdom</option>
+                <option value="turkey">Turkey</option>
+            </select>
+        </div>
+    </div>
+    <div class="simulation d-none" style="width: 50%;border: 1px solid #ffffff47;border-radius: 5px;background: #00000014;padding: 20px 50px;">
+        <h4 style="
+    text-align: center;
+    font-family: Roboto Thin;
+    font-size: 30px;
+">
+            Simulation Results
+        </h4>
+        <hr><div style="
+    display: flex;
+    justify-content: space-between;
+">
+            <p>Monthly Payment:</p>
+            <p>$350</p>
+        </div>
+        <div style="
+    display: flex;
+    justify-content: space-between;
+">
+            <p>APR:</p>
+            <p>5.25%</p>
+        </div>
+        <div style="
+    display: flex;
+    justify-content: space-between;
+">
+            <p>Total Payable Amount:</p>
+            <p>$52500</p>
+        </div>
+    </div>
+    <div class="action-buttons d-flex justify-content-center flex-column align-items-center" style="width: 40%;">
+        <a id="runSimulation" class="btn btn-primary d-flex align-items-center justify-content-around mb-2" style="width: 50% !important;">
+            <p class="action-buttons-text">
+                Run Simulation
+            </p>
+        </a>
+        <a class="btn btn-light d-flex align-items-center justify-content-around" style="width: 50% !important;" href="/">
+            <p class="action-buttons-text text-dark">
+                Go Back
+            </p>
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+    document.querySelector('#runSimulation').addEventListener('click', () => {
+        fetch('/Loan/Simulation').then(data => data.json())
+            .then(res => {
+                console.log(res);
+            })
+    })    
+</script>

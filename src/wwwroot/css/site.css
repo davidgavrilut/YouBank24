@@ -109,7 +109,7 @@ p {
 }
 
 .action-buttons {
-    width: 45%;
+    width: 50%;
 }
 
 .action-buttons > .btn-primary {
@@ -290,6 +290,9 @@ input:-webkit-autofill {
     box-shadow: 20px 25px 0px 0px #370c3340;
 }
 
+.custom-select-blue {
+    background-color: #35399b !important;
+}
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) and (max-width: 1899px) {
     .main-title {
