@@ -166,8 +166,8 @@
             displayAlert("Incomplete fields", "Please provide all the necessary data for the simulation");
         } else if (amount < 1000 || amount > 30000) {
             displayAlert("Invalid loan amount", "For personal-need loans, the amount must be between $1.000 and $30.000");
-        } else if (period < 1 || period > 30) {
-            displayAlert("Invalid loan period", "For personal-need loans, the period must be between 1 and 30 months")
+        } else if (period < 1 || period > 60) {
+            displayAlert("Invalid loan period", "For personal-need loans, the period must be between 1 and 60 months")
         } else {
             fetch(`/Loan/Simulate?country=${country}&amount=${amount}&period=${period}`).then(data => data.json())
                 .then(res => {
