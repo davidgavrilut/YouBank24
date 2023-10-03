@@ -20,9 +20,7 @@ namespace YouBank24.Controllers
             return View();
         }
 
-        [HttpGet]
-        [Route("[Controller]/GetInterest/{country}")] // temporary
-        public async Task<IActionResult> GetInterest(string country)
+        public async Task<double> GetInterest(string country)
         {
             var request = new HttpRequestMessage
             {
@@ -45,19 +43,27 @@ namespace YouBank24.Controllers
 
             var interestRateData = await JsonSerializer.DeserializeAsync<InterestRateData>(stream, options);
             var filteredRates = interestRateData?.central_bank_rates
-                .Where(r => r.country == country);
-            
-            return Ok(filteredRates);
+                .Where(r => r.country == country)
+                .Select(s => s.rate_pct).FirstOrDefault();
+            if (filteredRates != null)
+            {
+                return (double)filteredRates;
+            }
+            throw new BadHttpRequestException("No data was found for the specified country");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Simulate(int amount, int period, string country)
         {
             var interest = await GetInterest(country);
-            // calculate monthly
-            // calculate total payable amount
-            // return monthly, total amount, interest
-            return Json(new { });
-        }
+            var monthlyInterest = interest / 12 / 100;
+
+
+            var monthlyPayment = amount * (monthlyInterest * Math.Pow((1 + monthlyInterest), period)) / (Math.Pow((1 + monthlyInterest), period) - 1);
+                var totalPayableAmount = monthlyPayment * period;
+
+                return Json(new { monthlyPayment, totalPayableAmount, interest });
+            }
     }
 }
 
