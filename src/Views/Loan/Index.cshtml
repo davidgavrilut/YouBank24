@@ -63,33 +63,53 @@
         </div>
     </div>
     <div class="simulation d-none" style="width: 50%;border: 1px solid #ffffff47;border-radius: 5px;background: #00000014;padding: 20px 50px;">
-        <h4 style="
+        <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+">
+            <h4 style="
     text-align: center;
     font-family: Roboto Thin;
     font-size: 32px;
+    margin: 0;
 ">
-            Simulation Results
-        </h4>
-        <hr><div style="
+                Simulation Results
+            </h4>
+
+            <div style="
+    display: flex;
+    align-items: center;
+    width: max-content;
+">
+                <img src="/img/rapidapi.png" style="
+    width: 40px;
+    margin-right: 15px;
+"><p style="
+    font-weight: 200;
+    font-size: 14px;
+">Latest country-specific interest rates provided by RapidAPI</p>
+            </div>
+        </div><hr><div style="
     display: flex;
     justify-content: space-between;
 ">
             <p class="simulation-label">Monthly Payment:</p>
-            <p class="simulation-value" id="monthlyPaymentValue">$350</p>
+            <p class="simulation-value" id="monthlyPaymentValue">$215.52</p>
         </div>
         <div style="
     display: flex;
     justify-content: space-between;
 ">
             <p class="simulation-label">APR:</p>
-            <p class="simulation-value" id="interestValue">5.25%</p>
+            <p class="simulation-value" id="interestValue">7.00%</p>
         </div>
         <div style="
     display: flex;
     justify-content: space-between;
 ">
             <p class="simulation-label">Total Payable Amount:</p>
-            <p class="simulation-value" id="totalPayableAmountValue">$52500</p>
+            <p class="simulation-value" id="totalPayableAmountValue">$5387.99</p>
         </div>
     </div>
     <div class="action-buttons d-flex justify-content-center flex-column align-items-center" style="width: 40%;">
