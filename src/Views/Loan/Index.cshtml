@@ -10,7 +10,7 @@
 ">
             Loan Simulation
         </h2>
-        <p>Run a simulation for your desired personal-needs loan*. Enter the amount and period for your loan, and we'll provide you with a detailed simulation! Based on the data you input, we will apply a country-specific interest and calculate the monthly payment and the final payable amount:</p>
+        <p style="font-weight: 300; text-align: center;">Run a simulation for your desired personal-needs loan*. Enter the amount and period, and we'll provide you with a detailed simulation! Based on the data you input, we will apply a country-specific interest and calculate the monthly payment and the final payable amount:</p>
     </div>
     <div class="inputs" style="
     width: 50%;
@@ -48,7 +48,6 @@
                 <option value="China">China</option>
                 <option value="Czech Republic">Czech Republic</option>
                 <option value="Denmark">Denmark</option>
-                <option value="Great Britain">Great Britain</option>
                 <option value="Hungary">Hungary</option>
                 <option value="India">India</option>
                 <option value="Norway">Norway</option>
@@ -57,7 +56,8 @@
                 <option value="South Korea">South Korea</option>
                 <option value="Sweden">Sweden</option>
                 <option value="Switzerland">Switzerland</option>
-                <option value="Turkey">Turkey</option>
+                <option value="Türkiye">Turkey</option>
+                <option value="United Kingdom">United Kingdom</option>
                 <option value="United States">United States</option>
             </select>
         </div>
@@ -67,6 +67,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+">
+            <img class="email-simulation" src="/img/simulation-mail.png" title="Get email with current simulation" style="
+    width: 30px;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
 ">
             <h4 style="
     text-align: center;
@@ -85,10 +92,10 @@
                 <img src="/img/rapidapi.png" style="
     width: 40px;
     margin-right: 15px;
-"><p style="
+"><p id="interestRateUpdatedText" style="
     font-weight: 200;
     font-size: 14px;
-">Latest country-specific interest rates provided by RapidAPI</p>
+">...</p>
             </div>
         </div><hr><div style="
     display: flex;
@@ -148,35 +155,52 @@
         );
     }
 
-    function displayAlert(title, message) {
+    function displayAlert(icon, title, message) {
         Swal.fire({
-            icon: 'error',
+            icon: icon,
             title: title,
             text: message
         })
     }
 
     document.querySelector('#runSimulation').addEventListener('click', () => {
-        const country = toTitleCase(document.querySelector("#countries").value);
-        const amount = document.querySelector('#inputAmount').value;
-        const period = document.querySelector('#inputPeriod').value;
+        const countryRaw = document.querySelector("#countries");
+        const country = toTitleCase(countryRaw.value);
+        const amount = document.querySelector('#inputAmount');
+        const period = document.querySelector('#inputPeriod');
+        const interestUpdated = document.querySelector('#interestRateUpdatedText');
+        const emailSimulation = document.querySelector('.email-simulation');
 
 
-        if (!amount || !period || !country) {
-            displayAlert("Incomplete fields", "Please provide all the necessary data for the simulation");
-        } else if (amount < 1000 || amount > 30000) {
-            displayAlert("Invalid loan amount", "For personal-need loans, the amount must be between $1.000 and $30.000");
-        } else if (period < 1 || period > 60) {
-            displayAlert("Invalid loan period", "For personal-need loans, the period must be between 1 and 60 months")
+        if (!amount.value || !period.value || !country) {
+            displayAlert("error", "Incomplete fields", "Please provide all the necessary data for the simulation");
+        } else if (amount.value < 1000 || amount.value > 30000) {
+            displayAlert("error", "Invalid loan amount", "For personal-need loans, the amount must be between $1.000 and $30.000");
+        } else if (period.value < 1 || period.value > 60) {
+            displayAlert("error", "Invalid loan period", "For personal-need loans, the period must be between 1 and 60 months")
         } else {
-            fetch(`/Loan/Simulate?country=${country}&amount=${amount}&period=${period}`).then(data => data.json())
+            fetch(`/Loan/Simulate?country=${country}&amount=${amount.value}&period=${period.value}`).then(data => data.json())
                 .then(res => {
                     console.log(res);
-                    monthlyPayment.textContent = '$' + res.monthlyPayment.toFixed(2);
-                    totalPayableAmount.textContent = '$' + res.totalPayableAmount.toFixed(2);
+                    monthlyPayment.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.monthlyPayment.toFixed(2));
+                    totalPayableAmount.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.totalPayableAmount.toFixed(2));
                     interest.textContent = res.interest.toFixed(2) + '%';
+                    interestUpdated.textContent = `${res.centralBank} interest rate updated on ${res.lastUpdated}, provided by RapidAPI`;
                     simulation.classList.remove('d-none');
-                }).catch(err => console.error(err));
+                    emailSimulation.addEventListener('click', () => {
+                        fetch(`/Loan/SendSimulationEmail?country=${country}&amount=${amount.value}&period=${period.value}&monthlyPayment=${res.monthlyPayment.toFixed(2)}&interest=${res.interest.toFixed(2)}&totalPayableAmount=${res.totalPayableAmount.toFixed(2)}&centralBank=${res.centralBank}&lastUpdated=${res.lastUpdated}`, { method: 'POST' })
+                            .then(() => {
+                                displayAlert("success", "Email sent", "An email has been sent to your email address with the current simulation");
+                                simulation.classList.add('d-none');
+                                countryRaw.value = null;
+                                amount.value = null;
+                                period.value = null;
+                            })
+                    })
+                }).catch(err => {
+                    console.error(err);
+                    displayAlert("error", "Something went wrong", "Data is currently unavailable for the selected country, please try again later");
+                });
         }
     });
 </script>

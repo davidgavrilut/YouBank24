@@ -4,6 +4,7 @@
     {
         public const string SenderMessageSubject = "New Transaction Sent";
         public const string ReceiverMessageSubject = "New Transaction Received";
+        public const string SimulationEmailSubject = "YouBank Simulation Results";
 
         public static string SenderMessageBody(string senderFirstName, string senderLastName, string receiverFirstName, string receiverLastName, float amount, string note)
         {
@@ -26,7 +27,11 @@
             {
                 return $"<h3>New Transaction Received</h3><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>A new transaction has been successfully created on the YouBank24 platform.</p><p>You, {receiverFirstName} {receiverLastName}, have just received ${amount} from {senderFirstName} {senderLastName}.</p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p style=\"font-style: italic; font-weight: 600\">YouBank Team</p>";
             }
-            
+        }
+
+        public static string SimulationEmailBody(string country, int amount, int period, double monthlyPayment, double interest, double totalPayableAmount, string centralBank, string lastUpdated)
+        {
+            return $"<h3>YouBank Simulation Results</h3><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>You have saved the following simulation perform on the YouBank24 platform:</p><p>Simulation done for {country}.</p><p>Requested amount: ${amount}</p><p>Requested period: {period} months</p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p>Monthly payment: ${monthlyPayment}</p><p>APR: {interest}% - Last updated by {centralBank} on {lastUpdated}</p><p>Total payable amount: ${totalPayableAmount}</p><hr style=\"\r\n    width: 10%;\r\n    margin-left: 0;\r\n\"><p style=\"font-style: italic; font-weight: 600\">YouBank Team</p>";
         }
 
     }

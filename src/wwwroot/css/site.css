@@ -113,7 +113,7 @@ p {
 }
 
 .action-buttons > .btn-primary {
-    width: 30%;
+    width: 25%;
 }
 
 .action-buttons-text {
@@ -164,7 +164,7 @@ p {
 }
 
 .link-hover-behavior:hover {
-    background-color: transparent; !important
+    background-color: transparent !important;
 }
 
 input:-webkit-autofill {
@@ -301,6 +301,10 @@ input:-webkit-autofill {
 .simulation-label {
     font-size: 20px;
     font-weight: 500;
+}
+
+.email-simulation:hover {
+    filter: brightness(0.9);
 }
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) and (max-width: 1899px) {
