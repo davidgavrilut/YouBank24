@@ -148,6 +148,7 @@
     let emailSimulation = document.querySelector('.email-simulation');
     let interestUpdated = document.querySelector('#interestRateUpdatedText');
     let runSimulation = document.querySelector('#runSimulation');
+    let request = 0;
     let countryRaw;
     let country;
     let amount;
@@ -184,19 +185,24 @@
         } else if (period.value < 1 || period.value > 60) {
             displayAlert("error", "Invalid loan period", "For personal-need loans, the period must be between 1 and 60 months")
         } else {
-            fetch(`/Loan/Simulate?country=${country}&amount=${amount.value}&period=${period.value}`).then(data => data.json())
-                .then(res => {
-                    centralBank = res.centralBank;
-                    lastUpdated = res.lastUpdated;
-                    monthlyPayment.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.monthlyPayment.toFixed(2));
-                    totalPayableAmount.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.totalPayableAmount.toFixed(2));
-                    interest.textContent = res.interest.toFixed(2) + '%';
-                    interestUpdated.textContent = `${centralBank} interest rate updated on ${lastUpdated}, provided by RapidAPI`;
-                    simulation.classList.remove('d-none');
-                }).catch(err => {
-                    console.error(err);
-                    displayAlert("error", "Something went wrong", "Data is currently unavailable for the selected country, please try again later");
-                });
+            if (request <= 5) {
+                fetch(`/Loan/Simulate?country=${country}&amount=${amount.value}&period=${period.value}`).then(data => data.json())
+                    .then(res => {
+                        request += 1;
+                        centralBank = res.centralBank;
+                        lastUpdated = res.lastUpdated;
+                        monthlyPayment.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.monthlyPayment.toFixed(2));
+                        totalPayableAmount.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.totalPayableAmount.toFixed(2));
+                        interest.textContent = res.interest.toFixed(2) + '%';
+                        interestUpdated.textContent = `${centralBank} interest rate updated on ${lastUpdated}, provided by RapidAPI`;
+                        simulation.classList.remove('d-none');
+                    }).catch(err => {
+                        console.error(err);
+                        displayAlert("error", "Something went wrong", "Data is currently unavailable for the selected country, please try again later");
+                    });
+            } else {
+                displayAlert("error", "Simulation limit reached", "You can't request more than 5 simulations at a time");
+            }
         }
     });
     
