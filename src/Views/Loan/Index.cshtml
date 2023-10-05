@@ -141,10 +141,19 @@
 <script type="text/javascript">
     document.getElementById("countries").selectedIndex = -1;
 
-    const simulation = document.querySelector('.simulation');
-    const monthlyPayment = document.querySelector('#monthlyPaymentValue');
-    const interest = document.querySelector('#interestValue');
-    const totalPayableAmount = document.querySelector('#totalPayableAmountValue');
+    let simulation = document.querySelector('.simulation');
+    let monthlyPayment = document.querySelector('#monthlyPaymentValue');
+    let interest = document.querySelector('#interestValue');
+    let totalPayableAmount = document.querySelector('#totalPayableAmountValue');
+    let emailSimulation = document.querySelector('.email-simulation');
+    let interestUpdated = document.querySelector('#interestRateUpdatedText');
+    let runSimulation = document.querySelector('#runSimulation');
+    let countryRaw;
+    let country;
+    let amount;
+    let period;
+    let centralBank;
+    let lastUpdated;
 
     function toTitleCase(str) {
         return str.replace(
@@ -163,15 +172,11 @@
         })
     }
 
-    document.querySelector('#runSimulation').addEventListener('click', () => {
-        const countryRaw = document.querySelector("#countries");
-        const country = toTitleCase(countryRaw.value);
-        const amount = document.querySelector('#inputAmount');
-        const period = document.querySelector('#inputPeriod');
-        const interestUpdated = document.querySelector('#interestRateUpdatedText');
-        const emailSimulation = document.querySelector('.email-simulation');
-
-
+    runSimulation.addEventListener('click', () => {
+        countryRaw = document.querySelector("#countries");
+        country = toTitleCase(countryRaw.value);
+        amount = document.querySelector('#inputAmount');
+        period = document.querySelector('#inputPeriod');
         if (!amount.value || !period.value || !country) {
             displayAlert("error", "Incomplete fields", "Please provide all the necessary data for the simulation");
         } else if (amount.value < 1000 || amount.value > 30000) {
@@ -181,26 +186,29 @@
         } else {
             fetch(`/Loan/Simulate?country=${country}&amount=${amount.value}&period=${period.value}`).then(data => data.json())
                 .then(res => {
-                    console.log(res);
+                    centralBank = res.centralBank;
+                    lastUpdated = res.lastUpdated;
                     monthlyPayment.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.monthlyPayment.toFixed(2));
                     totalPayableAmount.textContent = '$' + new Intl.NumberFormat('en-In', {}).format(res.totalPayableAmount.toFixed(2));
                     interest.textContent = res.interest.toFixed(2) + '%';
-                    interestUpdated.textContent = `${res.centralBank} interest rate updated on ${res.lastUpdated}, provided by RapidAPI`;
+                    interestUpdated.textContent = `${centralBank} interest rate updated on ${lastUpdated}, provided by RapidAPI`;
                     simulation.classList.remove('d-none');
-                    emailSimulation.addEventListener('click', () => {
-                        fetch(`/Loan/SendSimulationEmail?country=${country}&amount=${amount.value}&period=${period.value}&monthlyPayment=${res.monthlyPayment.toFixed(2)}&interest=${res.interest.toFixed(2)}&totalPayableAmount=${res.totalPayableAmount.toFixed(2)}&centralBank=${res.centralBank}&lastUpdated=${res.lastUpdated}`, { method: 'POST' })
-                            .then(() => {
-                                displayAlert("success", "Email sent", "An email has been sent to your email address with the current simulation");
-                                simulation.classList.add('d-none');
-                                countryRaw.value = null;
-                                amount.value = null;
-                                period.value = null;
-                            })
-                    })
                 }).catch(err => {
                     console.error(err);
                     displayAlert("error", "Something went wrong", "Data is currently unavailable for the selected country, please try again later");
                 });
         }
     });
+    
+    emailSimulation.addEventListener('click', (e) => {
+        console.log(monthlyPayment.textContent, totalPayableAmount.textContent, interest.textContent);
+        fetch(`/Loan/SendSimulationEmail?country=${country}&amount=${amount.value}&period=${period.value}&monthlyPayment=${monthlyPayment.textContent}&interest=${interest.textContent}&totalPayableAmount=${totalPayableAmount.textContent}&centralBank=${centralBank}&lastUpdated=${lastUpdated}`, { method: 'POST' })
+            .then(() => {
+                displayAlert("success", "Email sent", "An email has been sent to your email address with the current simulation");
+                simulation.classList.add('d-none');
+                countryRaw.value = null;
+                amount.value = null;
+                period.value = null;
+            })
+    })
 </script>
