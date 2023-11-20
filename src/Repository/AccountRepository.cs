@@ -11,6 +11,25 @@ public class AccountRepository : Repository<Account>, IAccountRepository {
         rand = new Random();
     }
 
+    public Account GetAccountById(string accountId)
+    {
+        var account = _db.Accounts.FirstOrDefault(a => a.AccountId == accountId);
+        if (account == null)
+        {
+            throw new ArgumentNullException(nameof(accountId));
+        }
+        return account;
+    }
+
+    public Account GetAccountByUserId(string userId)
+    {
+        var account = _db.Accounts.FirstOrDefault(a => a.ApplicationUserId == userId);
+        if (account == null) {
+            throw new ArgumentNullException(nameof(userId));
+        }  
+        return account; 
+    }
+
     public void Update(string applicationUserId, float amount) {
         var objFromDb = _db.Accounts.FirstOrDefault(u => u.ApplicationUserId == applicationUserId);
             if (objFromDb != null) {
@@ -84,5 +103,4 @@ public class AccountRepository : Repository<Account>, IAccountRepository {
 
         return $"{monthStr}/{yearStr}";
     }
-
 }

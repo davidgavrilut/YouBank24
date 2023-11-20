@@ -8,15 +8,13 @@ using YouBank24.Utils;
 
 namespace YouBank24.Controllers; 
 public class SendMoneyController : Controller {
-    private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailSender _emailSender;
-    private ClaimsIdentity _claimsIdentity;
-    private Claim _claim;
+    private ClaimsIdentity? _claimsIdentity;
+    private Claim? _claim;
 
 
-    public SendMoneyController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IEmailSender emailSender) {
-        _logger = logger;
+    public SendMoneyController(IUnitOfWork unitOfWork, IEmailSender emailSender) {
         _unitOfWork = unitOfWork;
         _emailSender = emailSender;
     }
@@ -33,16 +31,22 @@ public class SendMoneyController : Controller {
     [Authorize]
     public IActionResult SendMoney(Transaction transaction, string email) {
         if (!ModelState.IsValid) {
-            _claimsIdentity = (ClaimsIdentity)User.Identity;
-            _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            _claimsIdentity = (ClaimsIdentity?)User.Identity;
+            _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (_claim == null)
+            {
+                throw new NullReferenceException(nameof(_claim));
+            }
+
             transaction.TransactionId = Guid.NewGuid().ToString();
             transaction.TransactionType = StaticDetails.TransactionTypeInstantMoney;
             transaction.TransactionTimestamp = DateTime.Now;
-            var receiverUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(r => r.Email == email);
+            var receiverUser = _unitOfWork.ApplicationUser.GetUserByEmail(email);
             transaction.ReceiverUserId = receiverUser.Id;
-            transaction.AccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.ApplicationUserId == _claim.Value).AccountId;
-            var senderUserId = _unitOfWork.Account.GetFirstOrDefault(si => si.AccountId == transaction.AccountId).ApplicationUserId;
-            var senderUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(s => s.Id == senderUserId);
+            transaction.AccountId = _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId;
+            var senderUserId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
+            var senderUser = _unitOfWork.ApplicationUser.GetUserById(senderUserId);
             _unitOfWork.Account.Update(_claim.Value, -transaction.Amount);
             _unitOfWork.Account.Update(transaction.ReceiverUserId, transaction.Amount);
             transaction.TransactionStatus = StaticDetails.StatusSuccess;
@@ -64,9 +68,15 @@ public class SendMoneyController : Controller {
     #region API CALLS
     [HttpGet]
     public IActionResult GetSendMoneyData() {
-        _claimsIdentity = (ClaimsIdentity)User.Identity;
-        _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-        IEnumerable<ApplicationUser> users = _unitOfWork.ApplicationUser.GetAll(x => x.Id != _claim.Value);
+        _claimsIdentity = (ClaimsIdentity?)User.Identity;
+        _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (_claim == null)
+        {
+            throw new NullReferenceException(nameof(_claim));
+        }
+
+        IEnumerable<ApplicationUser> users = _unitOfWork.ApplicationUser.GetAllUsersExceptCurrentUser(_claim.Value);
         List<object> sendMoneyData = new List<object>();
         foreach(var user in users) {
             sendMoneyData.Add( new { firstName = user.FirstName, lastName = user.LastName, email = user.Email });
@@ -75,9 +85,15 @@ public class SendMoneyController : Controller {
     }
 
     public IActionResult GetUserBalance() {
-        _claimsIdentity = (ClaimsIdentity)User.Identity;
-        _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-        var balance = _unitOfWork.Account.GetFirstOrDefault(a => a.ApplicationUserId == _claim.Value).Balance;
+        _claimsIdentity = (ClaimsIdentity?)User.Identity;
+        _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (_claim == null)
+        {
+            throw new NullReferenceException(nameof(_claim));
+        }
+
+        var balance = _unitOfWork.Account.GetAccountByUserId(_claim.Value).Balance;
         return Json(balance);
     }
     #endregion

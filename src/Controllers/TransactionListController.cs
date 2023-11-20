@@ -10,8 +10,8 @@ namespace YouBank24.Controllers;
 public class TransactionListController : Controller {
     private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private ClaimsIdentity _claimsIdentity;
-    private Claim _claim;
+    private ClaimsIdentity? _claimsIdentity;
+    private Claim? _claim;
 
     public TransactionListController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) {
         _logger = logger;
@@ -27,10 +27,10 @@ public class TransactionListController : Controller {
     [AutoValidateAntiforgeryToken]
     [Authorize] 
     public IActionResult TransactionDetails(string id) {
-        var transaction = _unitOfWork.Transaction.GetFirstOrDefault(t => t.TransactionId == id);
-        var receiverUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(r => r.Id == transaction.ReceiverUserId);
-        var senderUserId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
-        var senderUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(s => s.Id == senderUserId);
+        var transaction = _unitOfWork.Transaction.GetTransactionById(id);
+        var receiverUser = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
+        var senderUserId = _unitOfWork.Account.GetAccountByUserId(transaction.AccountId).ApplicationUserId;
+        var senderUser = _unitOfWork.ApplicationUser.GetUserById(senderUserId);
 
         var transactionDetailsViewModel = new TransactionDetailsViewModel {
             SenderFirstName = senderUser.FirstName,
@@ -50,24 +50,30 @@ public class TransactionListController : Controller {
     #region API CALLS
     [HttpGet("GetTransactions")]
     public IActionResult GetTransactions() {
-        _claimsIdentity = (ClaimsIdentity)User.Identity;
-        _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-        string loggedUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.ApplicationUserId == _claim.Value).AccountId;
-        IEnumerable<Transaction> transactionsSent = _unitOfWork.Transaction.GetAll(t => t.AccountId == loggedUserAccountId);
+        _claimsIdentity = (ClaimsIdentity?)User.Identity;
+        _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (_claim == null)
+        {
+            throw new NullReferenceException(nameof(_claim));
+        }
+
+        string loggedUserAccountId = _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId;
+        IEnumerable<Transaction> transactionsSent = _unitOfWork.Transaction.GetAllTransactionsByAccountId(loggedUserAccountId);
         List<dynamic> transactionsSentList = new List<dynamic>();
         foreach (Transaction transaction in transactionsSent) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
-                var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == transaction.ReceiverUserId);
+                var user = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
                 transactionsSentList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
             }
         }
-        string sendingUserAccountId = null;
-        IEnumerable<Transaction> transactionsReceived = _unitOfWork.Transaction.GetAll(t => t.ReceiverUserId == _claim.Value);
+        string? sendingUserAccountId = null;
+        IEnumerable<Transaction> transactionsReceived = _unitOfWork.Transaction.GetAllTransactionsByReceiverUserId(_claim.Value);
         List<dynamic> transactionsReceivedList = new List<dynamic>();
         foreach (Transaction transaction in transactionsReceived) {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
-                sendingUserAccountId = _unitOfWork.Account.GetFirstOrDefault(a => a.AccountId == transaction.AccountId).ApplicationUserId;
-                var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == sendingUserAccountId);
+                sendingUserAccountId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
+                var user = _unitOfWork.ApplicationUser.GetUserById(sendingUserAccountId);
                 transactionsReceivedList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
             }
         }

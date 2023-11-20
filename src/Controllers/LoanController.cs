@@ -17,8 +17,8 @@ namespace YouBank24.Controllers
         private readonly HttpClient _httpClient;
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
-        private ClaimsIdentity _claimsIdentity;
-        private Claim _claim;
+        private ClaimsIdentity? _claimsIdentity;
+        private Claim? _claim;
         public LoanController(HttpClient httpClient, IEmailSender emailSender, IUnitOfWork unitOfWork)
         {
             _httpClient = httpClient;
@@ -91,9 +91,14 @@ namespace YouBank24.Controllers
         [HttpPost]
         public IActionResult SendSimulationEmail(string country, int amount, int period, double monthlyPayment, double interest, double totalPayableAmount, string centralBank, string lastUpdated)
         {
-            _claimsIdentity = (ClaimsIdentity)User.Identity;
-            _claim = _claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var userEmail = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == _claim.Value).Email;
+            _claimsIdentity = (ClaimsIdentity?)User.Identity;
+            _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            
+            if (_claim == null) {
+                throw new NullReferenceException(nameof(_claim));
+            }
+
+            var userEmail = _unitOfWork.ApplicationUser.GetUserById(_claim.Value).Email;
             _emailSender.SendEmailAsync(
                 userEmail,
                 EmailMessages.SimulationEmailSubject,
