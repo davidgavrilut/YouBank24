@@ -1,6 +1,6 @@
 ﻿namespace YouBank24.Models.ViewModels
 {
-    public class NewTransactionCreatedModel
+    public class NewTransactionCreated
     {
         public Transaction Transaction { get; set; }
         public ApplicationUser ReceiverUser { get; set; }

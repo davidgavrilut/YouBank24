@@ -101,8 +101,8 @@ namespace YouBank24.Controllers
             var userEmail = _unitOfWork.ApplicationUser.GetUserById(_claim.Value).Email;
             _emailSender.SendEmailAsync(
                 userEmail,
-                EmailMessages.SimulationEmailSubject,
-                EmailMessages.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
+                EmailMessage.SimulationEmailSubject,
+                EmailMessage.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
             );
             return Ok();
         }

@@ -12,7 +12,7 @@ namespace YouBank24.Services
         public TransactionService(IUnitOfWork unitOfWork) { 
             _unitOfWork = unitOfWork;
         }
-        public NewTransactionCreatedModel CreateTransaction(Transaction transaction, string email, Claim claim)
+        public NewTransactionCreated CreateTransaction(Transaction transaction, string email, Claim claim)
         {
             transaction.TransactionId = Guid.NewGuid().ToString();
             transaction.TransactionType = StaticDetails.TransactionTypeInstantMoney;
@@ -22,7 +22,7 @@ namespace YouBank24.Services
             transaction.AccountId = _unitOfWork.Account.GetAccountByUserId(claim.Value).AccountId;
             var senderUserId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
             var senderUser = _unitOfWork.ApplicationUser.GetUserById(senderUserId);
-            return new NewTransactionCreatedModel()
+            return new NewTransactionCreated()
             {
                 Transaction = transaction,
                 ReceiverUser = receiverUser,

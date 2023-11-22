@@ -6,6 +6,6 @@ namespace YouBank24.Services.IServices
 {
     public interface ITransactionService
     {
-        NewTransactionCreatedModel CreateTransaction(Transaction transaction, string email, Claim claim);
+        NewTransactionCreated CreateTransaction(Transaction transaction, string email, Claim claim);
     } 
 }

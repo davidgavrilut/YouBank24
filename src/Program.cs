@@ -20,6 +20,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddSingleton<IEmailMessage, EmailMessage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddControllersWithViews();
