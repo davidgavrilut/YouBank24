@@ -5,7 +5,7 @@ using YouBank24.Repository.IRepository;
 namespace YouBank24.Repository; 
 public class AccountRepository : Repository<Account>, IAccountRepository {
     private ApplicationDbContext _db;
-    private Random rand;
+    private readonly Random rand;
     public AccountRepository(ApplicationDbContext db) : base(db) {
         _db = db;
         rand = new Random();
@@ -30,11 +30,12 @@ public class AccountRepository : Repository<Account>, IAccountRepository {
         return account; 
     }
 
-    public void Update(string applicationUserId, float amount) {
+    public void UpdateBalance(string applicationUserId, float amount) {
         var objFromDb = _db.Accounts.FirstOrDefault(u => u.ApplicationUserId == applicationUserId);
-            if (objFromDb != null) {
-            objFromDb.Balance += amount;
-            }
+        if (objFromDb == null) {
+            throw new NullReferenceException(nameof(objFromDb));         
+        }
+        objFromDb.Balance += amount;
     }
 
     public string GenerateCardNumber() {

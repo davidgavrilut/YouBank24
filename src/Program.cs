@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using YouBank24.Data;
 using YouBank24.Repository.IRepository;
 using YouBank24.Repository;
-using YouBank24.Utils;
+using YouBank24.Services;
 using YouBank24.Middleware;
+using YouBank24.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 

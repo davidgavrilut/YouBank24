@@ -4,7 +4,7 @@ using System.Security.Claims;
 using YouBank24.Models;
 using YouBank24.Models.ViewModels;
 using YouBank24.Repository.IRepository;
-using YouBank24.Utils;
+using YouBank24.Services;
 
 namespace YouBank24.Controllers;
 public class TransactionListController : Controller {
@@ -29,7 +29,7 @@ public class TransactionListController : Controller {
     public IActionResult TransactionDetails(string id) {
         var transaction = _unitOfWork.Transaction.GetTransactionById(id);
         var receiverUser = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
-        var senderUserId = _unitOfWork.Account.GetAccountByUserId(transaction.AccountId).ApplicationUserId;
+        var senderUserId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
         var senderUser = _unitOfWork.ApplicationUser.GetUserById(senderUserId);
 
         var transactionDetailsViewModel = new TransactionDetailsViewModel {

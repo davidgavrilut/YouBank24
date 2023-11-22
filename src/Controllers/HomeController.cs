@@ -52,6 +52,12 @@ public class HomeController : Controller {
     public IActionResult GetAccountCardNumberBalance() {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;
         _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (_claim  == null)
+        {
+            throw new NullReferenceException(nameof(_claim));
+        }
+
         var account = _unitOfWork.Account.GetAccountByUserId(_claim.Value);
         return Json(new { cardNumber = account.CardNumber, balance = account.Balance });
     }
