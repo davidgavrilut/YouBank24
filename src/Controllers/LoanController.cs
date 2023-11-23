@@ -96,8 +96,9 @@ namespace YouBank24.Controllers
         {
             _claimsIdentity = (ClaimsIdentity?)User.Identity;
             _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
-            
-            if (_claim == null) {
+
+            if (_claim == null)
+            {
                 throw new NullReferenceException(nameof(_claim));
             }
 
@@ -107,7 +108,7 @@ namespace YouBank24.Controllers
                 _emailMessage.SimulationEmailSubject,
                 _emailMessage.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
             );
-            return Ok();
+            return Json(new { country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated});
         }
     }
 }

@@ -207,8 +207,12 @@
     });
     
     emailSimulation.addEventListener('click', (e) => {
+
+        let monthlyPaymentValue = monthlyPayment.textContent.replace(/[$]/g, "");
+        let interestValue = interest.textContent.replace(/[%]/g, "");
+        let totalPayableAmountValue = totalPayableAmount.textContent.replace(/[$]/g, "");
         console.log(monthlyPayment.textContent, totalPayableAmount.textContent, interest.textContent);
-        fetch(`/Loan/SendSimulationEmail?country=${country}&amount=${amount.value}&period=${period.value}&monthlyPayment=${monthlyPayment.textContent}&interest=${interest.textContent}&totalPayableAmount=${totalPayableAmount.textContent}&centralBank=${centralBank}&lastUpdated=${lastUpdated}`, { method: 'POST' })
+        fetch(`/Loan/SendSimulationEmail?country=${country}&amount=${amount.value}&period=${period.value}&monthlyPayment=${monthlyPaymentValue}&interest=${interestValue}&totalPayableAmount=${totalPayableAmountValue}&centralBank=${centralBank}&lastUpdated=${lastUpdated}`, { method: 'POST' })
             .then(() => {
                 displayAlert("success", "Email sent", "An email has been sent to your email address with the current simulation");
                 simulation.classList.add('d-none');

@@ -5,7 +5,6 @@ using YouBank24.Data;
 using YouBank24.Repository.IRepository;
 using YouBank24.Repository;
 using YouBank24.Services;
-using YouBank24.Middleware;
 using YouBank24.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
