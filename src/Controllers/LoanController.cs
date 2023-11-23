@@ -6,9 +6,10 @@ using NHibernate.Util;
 using NuGet.Protocol;
 using System.Security.Claims;
 using System.Text.Json;
-using YouBank24.Data;
+using YouBank24.Models.ViewModels;
 using YouBank24.Repository.IRepository;
 using YouBank24.Services;
+using YouBank24.Services.IServices;
 
 namespace YouBank24.Controllers
 {
@@ -17,13 +18,15 @@ namespace YouBank24.Controllers
         private readonly HttpClient _httpClient;
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailMessage _emailMessage;
         private ClaimsIdentity? _claimsIdentity;
         private Claim? _claim;
-        public LoanController(HttpClient httpClient, IEmailSender emailSender, IUnitOfWork unitOfWork)
+        public LoanController(HttpClient httpClient, IEmailSender emailSender, IUnitOfWork unitOfWork, IEmailMessage emailMessage)
         {
             _httpClient = httpClient;
             _emailSender = emailSender;
             _unitOfWork = unitOfWork;
+            _emailMessage = emailMessage;
         }
         public IActionResult Index()
         {
@@ -101,8 +104,8 @@ namespace YouBank24.Controllers
             var userEmail = _unitOfWork.ApplicationUser.GetUserById(_claim.Value).Email;
             _emailSender.SendEmailAsync(
                 userEmail,
-                EmailMessage.SimulationEmailSubject,
-                EmailMessage.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
+                _emailMessage.SimulationEmailSubject,
+                _emailMessage.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
             );
             return Ok();
         }

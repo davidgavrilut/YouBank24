@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using YouBank24.Models;
+using YouBank24.Models.ViewModels;
 using YouBank24.Repository.IRepository;
 using YouBank24.Services;
 using YouBank24.Services.IServices;
@@ -80,9 +81,9 @@ public class SendMoneyController : Controller {
         }
 
         IEnumerable<ApplicationUser> users = _unitOfWork.ApplicationUser.GetAllUsersExceptCurrentUser(_claim.Value);
-        List<object> sendMoneyData = new List<object>();
+        List<SendMoneyUsersData> sendMoneyData = new List<SendMoneyUsersData>();
         foreach(var user in users) {
-            sendMoneyData.Add( new { firstName = user.FirstName, lastName = user.LastName, email = user.Email });
+            sendMoneyData.Add( new SendMoneyUsersData() { FirstName = user.FirstName, LastName = user.LastName, Email = user.Email });
         }
         return Json(sendMoneyData);
     }

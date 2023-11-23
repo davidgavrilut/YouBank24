@@ -1,4 +1,4 @@
-﻿namespace YouBank24.Data
+﻿namespace YouBank24.Models.ViewModels
 {
     public class InterestRateData
     {
