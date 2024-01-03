@@ -68,17 +68,17 @@ public class TransactionListController : Controller {
         return Json(new { transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
     }
 
-    private List<dynamic> GenerateTransactionsList(bool sender)
+    private List<dynamic> GenerateTransactionsList(bool isSender)
     {
-        string? loggedUserAccountId = sender ? _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId : null;
-        IEnumerable<Transaction> transactions = sender ? _unitOfWork.Transaction.GetAllTransactionsByAccountId(loggedUserAccountId) : _unitOfWork.Transaction.GetAllTransactionsByReceiverUserId(_claim.Value);
+        string? loggedUserAccountId = isSender ? _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId : null;
+        IEnumerable<Transaction> transactions = isSender ? _unitOfWork.Transaction.GetAllTransactionsByAccountId(loggedUserAccountId) : _unitOfWork.Transaction.GetAllTransactionsByReceiverUserId(_claim.Value);
         List<dynamic> transactionsList = new List<dynamic>();
         foreach (Transaction transaction in transactions)
         {
             if (transaction.TransactionStatus == StaticDetails.StatusSuccess)
             {
                 ApplicationUser user;
-                if (sender)
+                if (isSender)
                 {
                 user = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
                 } 
