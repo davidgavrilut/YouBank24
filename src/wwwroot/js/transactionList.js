@@ -64,6 +64,7 @@ spinner.style.display = 'block';
 fetch('/GetTransactions')
     .then(data => data.json())
     .then(res => {
+        console.log(res);
         const sentBtn = document.createElement('button');
         sentBtn.classList.add(...['btn', 'btn-outline-danger', 'me-2', 'w-25']);
         sentBtn.textContent = 'Sent';

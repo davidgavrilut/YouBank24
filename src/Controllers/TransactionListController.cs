@@ -49,7 +49,8 @@ public class TransactionListController : Controller {
 
     #region API CALLS
     [HttpGet("GetTransactions")]
-    public IActionResult GetTransactions() {
+    public IActionResult GetTransactions()
+    {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;
         _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -58,30 +59,39 @@ public class TransactionListController : Controller {
             throw new NullReferenceException(nameof(_claim));
         }
 
-        string loggedUserAccountId = _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId;
-        IEnumerable<Transaction> transactionsSent = _unitOfWork.Transaction.GetAllTransactionsByAccountId(loggedUserAccountId);
-        List<dynamic> transactionsSentList = new List<dynamic>();
-        foreach (Transaction transaction in transactionsSent) {
-            if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
-                var user = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
-                transactionsSentList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
-            }
-        }
-        string? sendingUserAccountId = null;
-        IEnumerable<Transaction> transactionsReceived = _unitOfWork.Transaction.GetAllTransactionsByReceiverUserId(_claim.Value);
-        List<dynamic> transactionsReceivedList = new List<dynamic>();
-        foreach (Transaction transaction in transactionsReceived) {
-            if (transaction.TransactionStatus == StaticDetails.StatusSuccess) {
-                sendingUserAccountId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
-                var user = _unitOfWork.ApplicationUser.GetUserById(sendingUserAccountId);
-                transactionsReceivedList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
-            }
-        }
+        List<dynamic> transactionsSentList = GenerateTransactionsList(true);
+        List<dynamic> transactionsReceivedList = GenerateTransactionsList(false);
 
         transactionsSentList = transactionsSentList.OrderByDescending(t => t.timestamp).ToList();
         transactionsReceivedList = transactionsReceivedList.OrderByDescending(t => t.timestamp).ToList();
 
-        return Json(new {transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
+        return Json(new { transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
+    }
+
+    private List<dynamic> GenerateTransactionsList(bool sender)
+    {
+        string? loggedUserAccountId = sender ? _unitOfWork.Account.GetAccountByUserId(_claim.Value).AccountId : null;
+        IEnumerable<Transaction> transactions = sender ? _unitOfWork.Transaction.GetAllTransactionsByAccountId(loggedUserAccountId) : _unitOfWork.Transaction.GetAllTransactionsByReceiverUserId(_claim.Value);
+        List<dynamic> transactionsList = new List<dynamic>();
+        foreach (Transaction transaction in transactions)
+        {
+            if (transaction.TransactionStatus == StaticDetails.StatusSuccess)
+            {
+                ApplicationUser user;
+                if (sender)
+                {
+                user = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
+                } 
+                else
+                {
+                    string sendingUserAccountId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
+                    user = _unitOfWork.ApplicationUser.GetUserById(sendingUserAccountId);
+                }
+                transactionsList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
+            }
+        }
+
+        return transactionsList;
     }
     #endregion
 }
