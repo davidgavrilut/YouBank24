@@ -23,7 +23,7 @@ builder.Services.AddSingleton<IEmailMessage, EmailMessage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IClientInterest, ClientInterest>();
 
 var app = builder.Build();
 
