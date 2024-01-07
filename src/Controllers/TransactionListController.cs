@@ -25,7 +25,7 @@ public class TransactionListController : Controller {
     }
 
     [AutoValidateAntiforgeryToken]
-    [Authorize] 
+    [Authorize]
     public IActionResult TransactionDetails(string id) {
         var transaction = _unitOfWork.Transaction.GetTransactionById(id);
         var receiverUser = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
