@@ -87,7 +87,7 @@ public class TransactionListController : Controller {
                     string sendingUserAccountId = _unitOfWork.Account.GetAccountById(transaction.AccountId).ApplicationUserId;
                     user = _unitOfWork.ApplicationUser.GetUserById(sendingUserAccountId);
                 }
-                transactionsList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss") });
+                transactionsList.Add(new { id = transaction.TransactionId, name = user.FirstName + " " + user.LastName, email = user.Email, amount = transaction.Amount, timestamp = transaction.TransactionTimestamp });
             }
         }
 

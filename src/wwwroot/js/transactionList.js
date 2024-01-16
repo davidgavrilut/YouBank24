@@ -28,7 +28,10 @@ function displayTransactions(item, index, color, symbol) {
     userDetailsContainer.appendChild(hr);
     const timestamp = document.createElement('p');
     timestamp.classList.add('item-timestamp');
-    timestamp.textContent = item.timestamp;
+    let [date, time] = item.timestamp.split('T');
+    time = time.split('.')[0];
+    const timestampString = `${date} ${time}`;
+    timestamp.textContent = timestampString;
     userDetailsContainer.appendChild(timestamp);
     transaction.appendChild(userDetailsContainer);
     const amountContainer = document.createElement('div');
