@@ -13,6 +13,7 @@ using YouBank24.Services.IServices;
 
 namespace YouBank24.Controllers
 {
+    [Authorize]
     public class LoanController : Controller
     {
         private readonly IClientInterest _clientInterest;

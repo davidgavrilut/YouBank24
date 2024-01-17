@@ -7,6 +7,7 @@ using YouBank24.Repository.IRepository;
 using YouBank24.Services;
 
 namespace YouBank24.Controllers;
+[Authorize]
 public class TransactionListController : Controller {
     private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _unitOfWork;
@@ -19,13 +20,11 @@ public class TransactionListController : Controller {
     }
 
     [AutoValidateAntiforgeryToken]
-    [Authorize]
     public IActionResult Index() {
         return View();
     }
 
     [AutoValidateAntiforgeryToken]
-    [Authorize]
     public IActionResult TransactionDetails(string id) {
         var transaction = _unitOfWork.Transaction.GetTransactionById(id);
         var receiverUser = _unitOfWork.ApplicationUser.GetUserById(transaction.ReceiverUserId);
@@ -40,7 +39,7 @@ public class TransactionListController : Controller {
             ReceiverLastName = receiverUser.LastName,
             ReceiverEmail = receiverUser.Email,
             Amount = transaction.Amount,
-            Timestamp = transaction.TransactionTimestamp.ToString("MM/dd/yyyy HH:mm:ss"),
+            Timestamp = transaction.TransactionTimestamp.ToString("yyy-MM-dd HH:mm:ss"),
             Note = transaction.Note ?? ""
         };
 
@@ -59,11 +58,10 @@ public class TransactionListController : Controller {
             throw new NullReferenceException(nameof(_claim));
         }
 
-        List<dynamic> transactionsSentList = GenerateTransactionsList(true);
-        List<dynamic> transactionsReceivedList = GenerateTransactionsList(false);
-
-        transactionsSentList = transactionsSentList.OrderByDescending(t => t.timestamp).ToList();
-        transactionsReceivedList = transactionsReceivedList.OrderByDescending(t => t.timestamp).ToList();
+        List<dynamic> transactionsSentList = GenerateTransactionsList(true)
+                                                .OrderByDescending(t => t.timestamp).ToList();
+        List<dynamic> transactionsReceivedList = GenerateTransactionsList(false)
+                                                .OrderByDescending(t => t.timestamp).ToList();
 
         return Json(new { transactionsSent = transactionsSentList, transactionsReceived = transactionsReceivedList });
     }

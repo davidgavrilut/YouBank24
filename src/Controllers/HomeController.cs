@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using YouBank24.Models;
@@ -27,6 +28,7 @@ public class HomeController : Controller {
     }
 
     [Route("Main")]
+    [Authorize]
     public IActionResult MainAccount() {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;
         _claim = _claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);

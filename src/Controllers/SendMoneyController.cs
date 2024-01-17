@@ -9,6 +9,7 @@ using YouBank24.Services;
 using YouBank24.Services.IServices;
 
 namespace YouBank24.Controllers;
+[Authorize]
 public class SendMoneyController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -29,7 +30,6 @@ public class SendMoneyController : Controller
 
     [Route("Send")]
     [AutoValidateAntiforgeryToken]
-    [Authorize]
     public IActionResult Index()
     {
         return View();
@@ -37,7 +37,6 @@ public class SendMoneyController : Controller
 
     [HttpPost]
     [AutoValidateAntiforgeryToken]
-    [Authorize]
     public IActionResult SendMoney(Transaction transaction, string email)
     {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;
