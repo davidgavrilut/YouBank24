@@ -157,6 +157,7 @@ namespace YouBank24.Areas.Identity.Pages.Account
                     IBAN = _unitOfWork.Account.GenerateIBAN(),
                     ExpirationDate = _unitOfWork.Account.GenerateExpirationDate(),
                     Balance = 3000.00F,
+                    ApplicationUser = user,
                     ApplicationUserId = user.Id
                 };
                 _unitOfWork.Account.Add(account);

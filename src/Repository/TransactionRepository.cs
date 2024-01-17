@@ -21,19 +21,19 @@ namespace YouBank24.Repository {
 
         public IEnumerable<Transaction> GetAllTransactionsByAccountId(string accountId)
         {
-            IEnumerable<Transaction> transactions = _db.Transactions.Where(t => t.AccountId == accountId);
-            if (transactions.Count() == 0) {
+            if (accountId == null) {
                 throw new ArgumentNullException(nameof(accountId));
             }
+            IEnumerable<Transaction> transactions = _db.Transactions.Where(t => t.AccountId == accountId);
             return transactions.ToList();
         }
         public IEnumerable<Transaction> GetAllTransactionsByReceiverUserId(string receiverUserId)
         {
-            IEnumerable<Transaction> transactions = _db.Transactions.Where(t =>  t.ReceiverUserId == receiverUserId);
-            if (transactions.Count() == 0)
+            if (receiverUserId == null)
             {
                 throw new ArgumentNullException(nameof(receiverUserId));
             }
+            IEnumerable<Transaction> transactions = _db.Transactions.Where(t =>  t.ReceiverUserId == receiverUserId);
             return transactions.ToList();
         }
 

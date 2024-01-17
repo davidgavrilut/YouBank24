@@ -32,11 +32,11 @@ public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicati
 
     public IEnumerable<ApplicationUser> GetAllUsersExceptCurrentUser(string currentUserId)
     {
-        IEnumerable<ApplicationUser> users = _db.ApplicationUsers.Where(u => u.Id != currentUserId);
-        if (users.Count() == 0)
+        if (currentUserId == null)
         {
             throw new ArgumentNullException(nameof(currentUserId));
         }
+        IEnumerable<ApplicationUser> users = _db.ApplicationUsers.Where(u => u.Id != currentUserId);
         return users.ToList();
     }
 }

@@ -72,6 +72,7 @@ public class SendMoneyController : Controller
 
     #region API CALLS
     [HttpGet]
+    [AutoValidateAntiforgeryToken]
     public IActionResult GetSendMoneyData()
     {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;
@@ -91,6 +92,8 @@ public class SendMoneyController : Controller
         return Json(sendMoneyData);
     }
 
+    [HttpGet]
+    [AutoValidateAntiforgeryToken]
     public IActionResult GetUserBalance()
     {
         _claimsIdentity = (ClaimsIdentity?)User.Identity;

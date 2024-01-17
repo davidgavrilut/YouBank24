@@ -60,9 +60,12 @@ function displayUsers(users) {
             closeIconContainer.addEventListener("click", (e) => {
                 if (e.target.closest('.close-icon')) {
                     e.stopPropagation();
+                    if (selectedSendMoneyItem) {
+
                     selectedSendMoneyItem.classList.remove('send-money-item-selected');
                     selectedSendMoneyItem.classList.add('item-send');
                     selectedSendMoneyItem.querySelector('.close-icon')?.remove();
+                    }
                     document.querySelector('#inputContainer')?.classList.add("d-none");
                     selectedSendMoneyItem = null;
                 }
