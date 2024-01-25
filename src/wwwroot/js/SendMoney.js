@@ -61,7 +61,6 @@ function displayUsers(users) {
                 if (e.target.closest('.close-icon')) {
                     e.stopPropagation();
                     if (selectedSendMoneyItem) {
-
                     selectedSendMoneyItem.classList.remove('send-money-item-selected');
                     selectedSendMoneyItem.classList.add('item-send');
                     selectedSendMoneyItem.querySelector('.close-icon')?.remove();

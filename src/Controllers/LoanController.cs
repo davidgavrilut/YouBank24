@@ -6,6 +6,7 @@ using NHibernate.Util;
 using NuGet.Protocol;
 using System.Security.Claims;
 using System.Text.Json;
+using YouBank24.Events;
 using YouBank24.Models.ViewModels;
 using YouBank24.Repository.IRepository;
 using YouBank24.Services;
@@ -20,14 +21,18 @@ namespace YouBank24.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailMessage _emailMessage;
+        private readonly IEmailCustomEvent _emailCustomEvent;
+        private readonly EventSubscriber _eventSubscriber;
         private ClaimsIdentity? _claimsIdentity;
         private Claim? _claim;
-        public LoanController(IClientInterest clientInterest, IEmailSender emailSender, IUnitOfWork unitOfWork, IEmailMessage emailMessage)
+        public LoanController(IClientInterest clientInterest, IEmailSender emailSender, IUnitOfWork unitOfWork, IEmailMessage emailMessage, IEmailCustomEvent emailCustomEvent)
         {
             _clientInterest = clientInterest;
             _emailSender = emailSender;
             _unitOfWork = unitOfWork;
             _emailMessage = emailMessage;
+            _eventSubscriber = new EventSubscriber();
+            _emailCustomEvent = emailCustomEvent;
         }
         public IActionResult Index()
         {
@@ -71,6 +76,7 @@ namespace YouBank24.Controllers
                 _emailMessage.SimulationEmailSubject,
                 _emailMessage.SimulationEmailBody(country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated)
             );
+            _eventSubscriber.Subscribe(_emailCustomEvent);
             return Json(new { country, amount, period, monthlyPayment, interest, totalPayableAmount, centralBank, lastUpdated});
         }
     }
