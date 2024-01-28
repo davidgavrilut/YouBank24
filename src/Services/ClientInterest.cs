@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
+using YouBank24.Models;
 using YouBank24.Models.ViewModels;
 using YouBank24.Services.IServices;
 
@@ -8,21 +9,23 @@ namespace YouBank24.Services
     public class ClientInterest : IClientInterest
     {
         private readonly HttpClient _httpClient;
+        private readonly ClientInterestConnectionOptions _clientInterestConnection;
 
-        public ClientInterest(HttpClient httpClient)
+        public ClientInterest(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _clientInterestConnection = configuration.GetSection("ClientInterest").Get<ClientInterestConnectionOptions>();
         }
         public async Task<InterestRate> GetInterestRateAsync(string country)
         {
             using var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://interest-rate-by-api-ninjas.p.rapidapi.com/v1/interestrate/"),
+                RequestUri = new Uri(_clientInterestConnection.Uri),
                 Headers =
                 {
-                    { "X-RapidAPI-Key", "f339be2775mshd41d71973094cf5p1908eajsn24a0b466000a" },
-                    { "X-RapidAPI-Host", "interest-rate-by-api-ninjas.p.rapidapi.com" },
+                    { "X-RapidAPI-Key", _clientInterestConnection.X_RapidAPI_Key },
+                    { "X-RapidAPI-Host", _clientInterestConnection.X_RapidAPI_Host },
                 },
             };
             using var response = await _httpClient.SendAsync(request);
