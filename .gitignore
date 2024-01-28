@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /src/Utils/EmailSender.cs
 /src/Utils/EmailSender.cs
+/src/appsettings.json
