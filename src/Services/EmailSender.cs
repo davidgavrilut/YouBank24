@@ -6,10 +6,23 @@ using YouBank24.Services.IServices;
 
 namespace YouBank24.Services;
 public class EmailSender : IEmailSender, IEmailCustomEvent {
-    public event EmailSentEventHandler EmailSent;
+    private EmailSentEventHandler _emailSentEventHandlers;
+    private readonly EmailConnectionOptions _emailConnectionOptions;
+
+    public EmailSender(IConfiguration configuration)
+    {
+        _emailConnectionOptions = configuration.GetSection("EmailConnection").Get<EmailConnectionOptions>(); ;
+    }
+
+    public event EmailSentEventHandler EmailSent
+    {
+        add => _emailSentEventHandlers += value;
+        remove => _emailSentEventHandlers -= value;
+    }
+
     public Task SendEmailAsync(string email, string subject, string htmlMessage) {
         var emailToSend = new MimeMessage();
-        emailToSend.From.Add(MailboxAddress.Parse("davidgavrilut1@gmail.com"));
+        emailToSend.From.Add(MailboxAddress.Parse(_emailConnectionOptions.EmailFrom));
         emailToSend.To.Add(MailboxAddress.Parse(email));
         emailToSend.Subject = subject;
         emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -17,11 +30,10 @@ public class EmailSender : IEmailSender, IEmailCustomEvent {
             Text = htmlMessage
         };
 
-        // Sending Email
         using (var emailClient = new SmtpClient())
         {
             emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            emailClient.Authenticate("davidgavrilut1@gmail.com", "lychkbpshfafanuk");
+            emailClient.Authenticate(_emailConnectionOptions.ConnectionEmailAddress, _emailConnectionOptions.ConnectionPassword);
             emailClient.Send(emailToSend);
             emailClient.Disconnect(true);
         }
@@ -33,7 +45,7 @@ public class EmailSender : IEmailSender, IEmailCustomEvent {
 
     public virtual void OnEmailSent()
     {
-        EmailSent?.Invoke(this, new EmailSentEventArgs());
-        Console.WriteLine("---> <<Email Sent>> event raised");
+        _emailSentEventHandlers?.Invoke(this, new EmailSentEventArgs());
+        Console.WriteLine("<<Email Sent>> event raised");
     }
 }
