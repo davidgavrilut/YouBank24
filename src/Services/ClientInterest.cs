@@ -14,7 +14,7 @@ namespace YouBank24.Services
         public ClientInterest(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _clientInterestConnection = configuration.GetSection("ClientInterest").Get<ClientInterestConnectionOptions>();
+            _clientInterestConnection = configuration.GetSection("APIConnections").GetSection("ClientInterest").Get<ClientInterestConnectionOptions>();
         }
         public async Task<InterestRate> GetInterestRateAsync(string country)
         {
